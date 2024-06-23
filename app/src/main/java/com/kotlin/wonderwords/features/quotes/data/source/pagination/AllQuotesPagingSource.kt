@@ -2,12 +2,11 @@ package com.kotlin.wonderwords.features.quotes.data.source.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.kotlin.wonderwords.features.quotes.data.mapper.toQuote
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteDTO
 import com.kotlin.wonderwords.features.quotes.data.source.api.QuotesApiService
 import javax.inject.Inject
 
-class QuotesPagingSource @Inject constructor(
+class AllQuotesPagingSource @Inject constructor(
     private val quotesApiService: QuotesApiService
 ) : PagingSource<Int, QuoteDTO>() {
 
@@ -22,7 +21,7 @@ class QuotesPagingSource @Inject constructor(
         return try {
             val currentPage = params.key ?: 1
             val response = quotesApiService.getQuotes(page = currentPage)
-            val data = response.quotes
+            val data = response.quotes.filter { !it.body.isNullOrEmpty() }
 
             LoadResult.Page(
                 data = data,

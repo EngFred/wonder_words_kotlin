@@ -22,7 +22,8 @@ fun HomeNavGraph(modifier: Modifier = Modifier, navController: NavHostController
                     navController.navigate(Graphs.DETAILS) {
                         launchSingleTop = true
                     }
-                }
+                },
+                modifier = modifier
             )
         }
         composable(BottomBarNavRoutes.Profile.destination) {

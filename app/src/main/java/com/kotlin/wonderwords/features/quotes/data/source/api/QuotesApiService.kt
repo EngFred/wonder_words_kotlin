@@ -11,4 +11,10 @@ interface QuotesApiService {
         @Query("page") page: Int
     ): QuotesResponse
 
+    @GET("/api/quotes")
+    suspend fun getQuotesByCategory(
+        @Query("page") page: Int,
+        @Query("filter") category: String
+    ): QuotesResponse
+
 }
