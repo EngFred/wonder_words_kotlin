@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.kotlin.wonderwords.features.quotes.domain.entity.Quote
-import com.kotlin.wonderwords.features.quotes.domain.entity.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.domain.Quote
+import com.kotlin.wonderwords.features.quotes.domain.domain.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.usecase.FetchQuotesUseCase
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesUiEvents
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesUiState
@@ -30,7 +30,6 @@ class QuotesViewModel @Inject constructor(
     init {
         fetchQuotes(_uiState.value.selectedCategory)
     }
-
 
     fun onEvent(event: QuotesUiEvents) {
         when(event) {

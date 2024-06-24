@@ -11,12 +11,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun QuoteDetailsScreen(modifier: Modifier = Modifier) {
+fun QuoteDetailsScreen(
+    modifier: Modifier = Modifier,
+    quoteId: Int
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Quote details", fontWeight = FontWeight.ExtraBold, fontSize = 22.sp)
+        Text(text = "Quote details\nquoteId is $quoteId", fontWeight = FontWeight.ExtraBold, fontSize = 22.sp)
     }
 }

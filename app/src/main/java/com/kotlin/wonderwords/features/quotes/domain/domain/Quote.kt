@@ -1,4 +1,4 @@
-package com.kotlin.wonderwords.features.quotes.domain.entity
+package com.kotlin.wonderwords.features.quotes.domain.domain
 
 data class Quote(
     val id: Int?,

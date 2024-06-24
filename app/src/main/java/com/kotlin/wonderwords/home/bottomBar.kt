@@ -4,12 +4,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatQuote
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -28,7 +30,9 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavHostController) {
     val showBottomBar = bottomBarNavItemsLists.any { it.route == currentDestination?.route }
 
     if (showBottomBar) {
-        NavigationBar {
+        NavigationBar(
+            containerColor = Color.Transparent,
+        ) {
             bottomBarNavItemsLists.forEach{ navItem ->
                 NavigationBarItem(
                     selected = navItem.route == currentDestination?.route,

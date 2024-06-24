@@ -1,4 +1,4 @@
-package com.kotlin.wonderwords.features.quotes.data.source.api
+package com.kotlin.wonderwords.features.quotes.data.remote.api
 
 import com.kotlin.wonderwords.features.quotes.data.modals.QuotesResponse
 import retrofit2.http.GET

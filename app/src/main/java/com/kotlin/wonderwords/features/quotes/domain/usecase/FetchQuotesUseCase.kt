@@ -1,6 +1,6 @@
 package com.kotlin.wonderwords.features.quotes.domain.usecase
 
-import com.kotlin.wonderwords.features.quotes.domain.entity.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.domain.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
 import javax.inject.Inject
 

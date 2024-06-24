@@ -3,7 +3,7 @@ package com.kotlin.wonderwords.di
 import com.kotlin.wonderwords.BuildConfig
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
-import com.kotlin.wonderwords.features.quotes.data.source.api.QuotesApiService
+import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.kotlin.wonderwords.features.quotes.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,14 +24,18 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
-import com.kotlin.wonderwords.features.quotes.domain.entity.Quote
+import com.kotlin.wonderwords.features.quotes.domain.domain.Quote
 
 @Composable
-fun QuoteItem(modifier: Modifier = Modifier, quote: Quote) {
+fun QuoteItem(
+    modifier: Modifier = Modifier,
+    quote: Quote,
+    onQuoteClick: (Int) -> Unit
+) {
     Card(
         modifier = Modifier
+            .clickable { onQuoteClick(quote.id!!) }
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -89,6 +93,6 @@ private fun QuoteItemPreview() {
             body = "This is a quote",
             author = "Author",
             favorite = false
-        ))
+        ), onQuoteClick = {})
     }
 }
