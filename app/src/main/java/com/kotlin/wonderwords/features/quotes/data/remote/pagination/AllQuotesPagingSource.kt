@@ -1,14 +1,19 @@
 package com.kotlin.wonderwords.features.quotes.data.remote.pagination
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.kotlin.wonderwords.features.quotes.data.local.dao.QuotesDao
+import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
+import com.kotlin.wonderwords.features.quotes.data.mapper.toQuoteEntity
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteDTO
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteEntity
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
 import javax.inject.Inject
 
 class AllQuotesPagingSource @Inject constructor(
-    private val quotesApiService: QuotesApiService
+    private val quotesApiService: QuotesApiService,
+    private val quotesDatabase: QuotesDatabase
 ) : PagingSource<Int, QuoteDTO>() {
 
     override fun getRefreshKey(state: PagingState<Int, QuoteDTO>): Int? {
@@ -24,6 +29,9 @@ class AllQuotesPagingSource @Inject constructor(
             val response = quotesApiService.getQuotes(page = currentPage)
             val data = response.quotes.filter { !it.body.isNullOrEmpty() && it.body.length > 4 }
 
+            quotesDatabase.quotesDao().addQuotes(data.map { it.toQuoteEntity() })
+            Log.wtf("#", "Quotes cached successfully!")
+
             LoadResult.Page(
                 data = data,
                 prevKey = if (currentPage == 1) null else currentPage - 1,
@@ -33,6 +41,4 @@ class AllQuotesPagingSource @Inject constructor(
             LoadResult.Error(exception)
         }
     }
-
-
 }

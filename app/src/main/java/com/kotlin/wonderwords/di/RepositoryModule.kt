@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.di
 
+import android.content.Context
 import com.kotlin.wonderwords.features.auth.data.repository.AuthRepositoryImpl
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
@@ -11,6 +12,7 @@ import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -34,11 +36,13 @@ object RepositoryModule {
     @Singleton
     fun providesQuotesRepository(
         quotesApiService: QuotesApiService,
-        quotesDatabase: QuotesDatabase
+        quotesDatabase: QuotesDatabase,
+        @ApplicationContext context: Context
     ) : QuotesRepository{
         return  QuotesRepositoryImpl(
             quotesApiService = quotesApiService,
-            quotesDatabase = quotesDatabase
+            quotesDatabase = quotesDatabase,
+            context = context
         )
     }
 }
