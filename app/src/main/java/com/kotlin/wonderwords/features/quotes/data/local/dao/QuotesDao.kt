@@ -9,11 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuotesDao {
-//    @Query("SELECT * FROM QUOTES_TABLE")
-//    fun getAllQuotes() : PagingSource<Int, QuoteEntity>
-
-    @Query("SELECT * FROM QUOTES_TABLE LIMIT :limit OFFSET :offset")
-    fun getQuotes(limit: Int, offset: Int) : Flow<List<QuoteEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addQuotes( quotes: List<QuoteEntity> )
@@ -23,4 +18,11 @@ interface QuotesDao {
 
     @Query("SELECT COUNT(*) FROM QUOTES_TABLE")
     suspend fun getQuotesCount(): Int
+
+    @Query("DELETE FROM QUOTES_TABLE WHERE category = :category")
+    suspend fun deleteQuotesByCategory(category: String)
+
+    @Query("SELECT * FROM QUOTES_TABLE  WHERE category = :category LIMIT :limit OFFSET :offset")
+    fun getQuotesByCategory(category: String, limit: Int, offset: Int) : Flow<List<QuoteEntity>>
+
 }

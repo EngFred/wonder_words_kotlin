@@ -36,13 +36,11 @@ object RepositoryModule {
     @Singleton
     fun providesQuotesRepository(
         quotesApiService: QuotesApiService,
-        quotesDatabase: QuotesDatabase,
-        @ApplicationContext context: Context
+        quotesDatabase: QuotesDatabase
     ) : QuotesRepository{
         return  QuotesRepositoryImpl(
             quotesApiService = quotesApiService,
-            quotesDatabase = quotesDatabase,
-            context = context
+            quotesDatabase = quotesDatabase
         )
     }
 }

@@ -7,12 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun ErrorScreen(modifier: Modifier = Modifier, errorText: String = "Something went wrong!") {
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = errorText, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(text = errorText, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
     }
 }

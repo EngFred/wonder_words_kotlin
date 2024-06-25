@@ -3,6 +3,7 @@ package com.kotlin.wonderwords.features.quotes.data.mapper
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteDTO
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteEntity
 import com.kotlin.wonderwords.features.quotes.domain.domain.Quote
+import com.kotlin.wonderwords.features.quotes.domain.domain.QuoteCategory
 
 fun QuoteEntity.toQuote() : Quote {
     return Quote(
@@ -13,12 +14,14 @@ fun QuoteEntity.toQuote() : Quote {
     )
 }
 
-fun QuoteDTO.toQuoteEntity() : QuoteEntity {
+fun QuoteDTO.toQuoteEntity(category: String) : QuoteEntity {
     return  QuoteEntity(
         id = id!!,
         author = author,
         body = body,
-        favorite = favorite
+        favorite = favorite,
+        category = category,
+        timeStamp = System.currentTimeMillis()
     )
 }
 

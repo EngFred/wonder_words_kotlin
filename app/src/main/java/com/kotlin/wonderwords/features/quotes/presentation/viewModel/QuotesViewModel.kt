@@ -59,4 +59,8 @@ class QuotesViewModel @Inject constructor(
             _fetchQuotes.value = it
         }
     }
+
+    fun refreshQuotes() {
+        fetchQuotes(uiState.value.selectedCategory)
+    }
 }

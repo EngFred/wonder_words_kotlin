@@ -1,5 +1,7 @@
 package com.kotlin.wonderwords.features.quotes.presentation.screen
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +17,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -28,6 +33,7 @@ import com.kotlin.wonderwords.features.quotes.presentation.components.LoadingScr
 import com.kotlin.wonderwords.features.quotes.presentation.components.QuotesGrid
 import com.kotlin.wonderwords.features.quotes.presentation.components.SearchTextField
 import com.kotlin.wonderwords.features.quotes.presentation.viewModel.QuotesViewModel
+import com.kotlin.wonderwords.features.quotes.receiver.ConnectivityReceiver
 
 @Composable
 fun QuotesScreen(
@@ -38,6 +44,24 @@ fun QuotesScreen(
 
     val quotes = quotesViewModel.fetchQuotes.collectAsLazyPagingItems()
     val uiState = quotesViewModel.uiState.collectAsState().value
+
+
+//    val connectivityReceiver = remember {
+//        ConnectivityReceiver { isConnected ->
+//            if (isConnected) {
+//                quotesViewModel.refreshQuotes()
+//            }
+//        }
+//    }
+//
+//    DisposableEffect(context) {
+//        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+//        context.registerReceiver(connectivityReceiver, intentFilter)
+//
+//        onDispose {
+//            context.unregisterReceiver(connectivityReceiver)
+//        }
+//    }
 
     Column(
         modifier = modifier
@@ -69,8 +93,12 @@ fun QuotesScreen(
                 LoadingScreen()
             }
             is LoadState.NotLoading -> {
-                Spacer(modifier = Modifier.height(8.dp))
-                QuotesGrid(modifier, quotes, onQuoteClick = onQuoteClick )
+                if ( quotes.itemCount == 0 ) {
+                    ErrorScreen(errorText = "No quotes found! Please make sure you have internet connection.")
+                }else {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    QuotesGrid(modifier, quotes, onQuoteClick = onQuoteClick )
+                }
             }
         }
 

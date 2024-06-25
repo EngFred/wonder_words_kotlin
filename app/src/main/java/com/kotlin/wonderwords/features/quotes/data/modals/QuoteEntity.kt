@@ -9,5 +9,7 @@ data class QuoteEntity(
     val id: Int,
     val author: String?,
     val body: String?,
-    val favorite: Boolean?
+    val favorite: Boolean?,
+    val category: String,
+    val timeStamp: Long
 )

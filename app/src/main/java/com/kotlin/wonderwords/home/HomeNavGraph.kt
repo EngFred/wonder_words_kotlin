@@ -28,9 +28,13 @@ fun HomeNavGraph(modifier: Modifier = Modifier, navController: NavHostController
             )
         }
         composable(BottomBarNavRoutes.Profile.destination) {
-            ProfileScreen()
+            ProfileScreen(modifier, onUpdateProfile = {
+                navController.navigate(DetailRoutes.UpdateProfile.destination){
+                    launchSingleTop = true
+                }
+            })
         }
 
-        detailGraph(navController)
+        detailGraph(modifier)
     }
 }
