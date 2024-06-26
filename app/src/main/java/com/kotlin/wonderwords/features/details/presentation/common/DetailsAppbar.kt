@@ -17,9 +17,13 @@ import com.kotlin.wonderwords.features.details.domain.entity.ReactionType
 fun DetailsAppbar(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
+    onFavClick: () -> Unit,
+    onUpvoteClick: () -> Unit,
+    onDowvoteClick: () -> Unit,
     upvotesCount: Int,
     downvotesCount: Int,
     favoritesCount: Int,
+    isFavorite: Boolean
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -31,9 +35,9 @@ fun DetailsAppbar(
             Icon(imageVector = Icons.Rounded.ArrowBackIosNew, contentDescription = null)
         }
 
-        ReactionComponent(type = ReactionType.Favorite, count = favoritesCount, onClick = {})
-        ReactionComponent(type = ReactionType.Upvote, count = upvotesCount, onClick = {})
-        ReactionComponent(type = ReactionType.Dowvote, count = downvotesCount, onClick = {})
+        ReactionComponent(type = ReactionType.Favorite, count = favoritesCount, onClick = onFavClick, isFavorite =  isFavorite)
+        ReactionComponent(type = ReactionType.Upvote, count = upvotesCount, onClick = onUpvoteClick)
+        ReactionComponent(type = ReactionType.Dowvote, count = downvotesCount, onClick = onDowvoteClick)
 
         IconButton(onClick = {}) {
             Icon(imageVector = Icons.Rounded.Share, contentDescription = null)

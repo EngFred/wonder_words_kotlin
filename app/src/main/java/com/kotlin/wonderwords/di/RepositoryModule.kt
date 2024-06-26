@@ -5,6 +5,9 @@ import com.kotlin.wonderwords.features.auth.data.repository.AuthRepositoryImpl
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.auth.domain.repository.AuthRepository
+import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
+import com.kotlin.wonderwords.features.details.data.repository.QuoteDetailRepositoryImpl
+import com.kotlin.wonderwords.features.details.domain.repository.QuoteDetailRepository
 import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.repository.QuotesRepositoryImpl
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
@@ -42,5 +45,13 @@ object RepositoryModule {
             quotesApiService = quotesApiService,
             quotesDatabase = quotesDatabase
         )
+    }
+
+    @Provides
+    @Singleton
+    fun providesQuoteDetailsRepository(
+        quoteDetailsApiService: QuoteDetailsApiService
+    ) : QuoteDetailRepository {
+        return  QuoteDetailRepositoryImpl(quoteDetailsApiService)
     }
 }

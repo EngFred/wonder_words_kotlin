@@ -35,6 +35,6 @@ fun HomeNavGraph(modifier: Modifier = Modifier, navController: NavHostController
             })
         }
 
-        detailGraph(modifier)
+        detailGraph(navController, modifier)
     }
 }

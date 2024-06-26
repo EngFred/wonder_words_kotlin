@@ -14,7 +14,10 @@ import com.kotlin.wonderwords.core.navigation.Graphs
 import com.kotlin.wonderwords.features.details.presentation.screen.QuoteDetailsScreen
 import com.kotlin.wonderwords.features.profile.presentation.screen.UpdateProfileScreen
 
-fun NavGraphBuilder.detailGraph(modifier: Modifier = Modifier) {
+fun NavGraphBuilder.detailGraph(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     navigation(startDestination = DetailRoutes.QuoteDetails.destination, route = Graphs.DETAILS) {
         composable(
             route = "${DetailRoutes.QuoteDetails.destination}/{quoteId}",
@@ -25,7 +28,9 @@ fun NavGraphBuilder.detailGraph(modifier: Modifier = Modifier) {
             )
         ) { navBackStackEntry ->
             val quoteId = navBackStackEntry.arguments?.getInt("quoteId") ?: -1
-            QuoteDetailsScreen(quoteId = quoteId, modifier = modifier)
+            QuoteDetailsScreen(quoteId = quoteId, modifier = modifier, onBack = {
+                navController.popBackStack()
+            })
         }
 
         composable(
