@@ -1,6 +1,5 @@
 package com.kotlin.wonderwords.di
 
-import android.content.Context
 import com.kotlin.wonderwords.features.auth.data.repository.AuthRepositoryImpl
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
@@ -8,6 +7,9 @@ import com.kotlin.wonderwords.features.auth.domain.repository.AuthRepository
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.details.data.repository.QuoteDetailRepositoryImpl
 import com.kotlin.wonderwords.features.details.domain.repository.QuoteDetailRepository
+import com.kotlin.wonderwords.features.profile.data.api.UserProfileApiService
+import com.kotlin.wonderwords.features.profile.data.repository.UserProfileRepositoryImpl
+import com.kotlin.wonderwords.features.profile.domain.repository.UserProfileRepository
 import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.repository.QuotesRepositoryImpl
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
@@ -15,7 +17,6 @@ import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -53,5 +54,15 @@ object RepositoryModule {
         quoteDetailsApiService: QuoteDetailsApiService
     ) : QuoteDetailRepository {
         return  QuoteDetailRepositoryImpl(quoteDetailsApiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesUserProfileRepository(
+        userProfileApiService: UserProfileApiService,
+        tokenManager: TokenManager,
+        quotesDatabase: QuotesDatabase
+    ): UserProfileRepository {
+        return UserProfileRepositoryImpl(userProfileApiService, tokenManager, quotesDatabase)
     }
 }

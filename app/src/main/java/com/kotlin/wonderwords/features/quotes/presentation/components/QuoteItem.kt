@@ -78,6 +78,7 @@ fun QuoteItem(
             Text(
                 text = "- ${quote.author}",
                 style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
                 modifier = Modifier.align(Alignment.End)
             )
         }
@@ -87,7 +88,9 @@ fun QuoteItem(
 @Preview(showBackground = true)
 @Composable
 private fun QuoteItemPreview() {
-    WonderWordsTheme {
+    WonderWordsTheme(
+        darkTheme = false
+    ) {
         QuoteItem(quote = Quote(
             id = 1,
             body = "This is a quote",

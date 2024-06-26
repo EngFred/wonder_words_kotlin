@@ -2,6 +2,8 @@ package com.kotlin.wonderwords.features.quotes.presentation.screen
 
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +24,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.theme.DarkSlateGrey
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 import com.kotlin.wonderwords.features.quotes.domain.domain.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.presentation.components.ErrorScreen
 import com.kotlin.wonderwords.features.quotes.presentation.components.LoadingScreen
@@ -39,29 +46,14 @@ import com.kotlin.wonderwords.features.quotes.receiver.ConnectivityReceiver
 fun QuotesScreen(
     modifier: Modifier = Modifier,
     onQuoteClick: (Int) -> Unit,
+    sharedViewModel: SharedViewModel,
     quotesViewModel: QuotesViewModel = hiltViewModel()
 ) {
 
     val quotes = quotesViewModel.fetchQuotes.collectAsLazyPagingItems()
     val uiState = quotesViewModel.uiState.collectAsState().value
 
-
-//    val connectivityReceiver = remember {
-//        ConnectivityReceiver { isConnected ->
-//            if (isConnected) {
-//                quotesViewModel.refreshQuotes()
-//            }
-//        }
-//    }
-//
-//    DisposableEffect(context) {
-//        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-//        context.registerReceiver(connectivityReceiver, intentFilter)
-//
-//        onDispose {
-//            context.unregisterReceiver(connectivityReceiver)
-//        }
-//    }
+    SetSystemBarColor(isAuth = false, sharedViewModel = sharedViewModel)
 
     Column(
         modifier = modifier
@@ -82,7 +74,8 @@ fun QuotesScreen(
                     quotesViewModel.onEvent(QuotesUiEvents.SelectedCategory(category))
                 }
             },
-            selectedCategory = { uiState.selectedCategory }
+            selectedCategory = { uiState.selectedCategory },
+            sharedViewModel = sharedViewModel
         )
 
         when (quotes.loadState.refresh) {
@@ -110,8 +103,13 @@ fun QuotesScreen(
 @Composable
 private fun CategoriesList(
     onCategorySelected: (QuoteCategory) -> Unit,
-    selectedCategory: () -> QuoteCategory
+    selectedCategory: () -> QuoteCategory,
+    sharedViewModel: SharedViewModel
 ) {
+
+    val currentTheme = sharedViewModel.currentTheme.collectAsState().value
+    val clickableTextColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
+
     LazyRow(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -123,10 +121,22 @@ private fun CategoriesList(
         ) { index ->
             val category = QuoteCategory.entries[index]
             OutlinedButton(
+                border = BorderStroke(
+                    width = 1.1.dp,
+                    color = if ( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) DarkSlateGrey else Color.Black
+                ),
                 onClick = { onCategorySelected(category) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (category == selectedCategory()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-                    contentColor = if (category == selectedCategory()) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
+                    contentColor = if (category == selectedCategory()){
+                        if ( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) {
+                            Color.LightGray
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        }
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    }
                 )
             ) {
                 Text(text = category.name)

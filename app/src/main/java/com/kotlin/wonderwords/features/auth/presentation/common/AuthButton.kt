@@ -1,6 +1,6 @@
 package com.kotlin.wonderwords.features.auth.presentation.common
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +12,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Login
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 
 @Composable
 fun AuthButton(
@@ -53,12 +55,12 @@ fun AuthButton(
 
         if (!isLoading()) {
             Row {
-                Icon(imageVector = icon , contentDescription = null )
+                Icon(imageVector = icon , contentDescription = null, tint = Color.LightGray )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text)
+                Text(text, color = Color.LightGray )
             }
         } else {
-            CircularProgressIndicator(modifier = Modifier.size(40.dp), color = Color.White)
+            CircularProgressIndicator(modifier = Modifier.size(40.dp), color = Color.LightGray)
         }
     }
 
@@ -67,7 +69,9 @@ fun AuthButton(
 @Preview(showBackground = true)
 @Composable
 private fun AuthButtonPreview() {
-    WonderWordsTheme {
+    WonderWordsTheme(
+        darkTheme = false
+    ) {
         AuthButton(text = "SignIn", onClick = {  }, isLoading = {false})
     }
 }

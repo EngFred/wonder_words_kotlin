@@ -12,6 +12,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +26,8 @@ fun RadioButtonTile(
     modifier: Modifier = Modifier,
     selected: () -> Boolean,
     onClick: () -> Unit,
-    label: String
+    label: String,
+    textColor: Color
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -37,9 +39,11 @@ fun RadioButtonTile(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RadioButton(selected = selected(), onClick = onClick)
+            RadioButton(selected = selected(), onClick = onClick, colors = RadioButtonDefaults.colors(
+                selectedColor = textColor,
+            ))
             Spacer(modifier = Modifier.width(10.dp))
-            Text(text = label)
+            Text(text = label, color = textColor)
         }
     }
 

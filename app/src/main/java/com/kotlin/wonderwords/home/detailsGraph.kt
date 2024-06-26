@@ -8,14 +8,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import androidx.room.Update
 import com.kotlin.wonderwords.core.navigation.DetailRoutes
 import com.kotlin.wonderwords.core.navigation.Graphs
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.details.presentation.screen.QuoteDetailsScreen
 import com.kotlin.wonderwords.features.profile.presentation.screen.UpdateProfileScreen
 
 fun NavGraphBuilder.detailGraph(
     navController: NavHostController,
+    sharedViewModel: SharedViewModel,
     modifier: Modifier = Modifier
 ) {
     navigation(startDestination = DetailRoutes.QuoteDetails.destination, route = Graphs.DETAILS) {
@@ -30,7 +31,7 @@ fun NavGraphBuilder.detailGraph(
             val quoteId = navBackStackEntry.arguments?.getInt("quoteId") ?: -1
             QuoteDetailsScreen(quoteId = quoteId, modifier = modifier, onBack = {
                 navController.popBackStack()
-            })
+            }, sharedViewModel = sharedViewModel)
         }
 
         composable(
@@ -39,7 +40,7 @@ fun NavGraphBuilder.detailGraph(
                 slideInHorizontally()
             }
         ) {
-            UpdateProfileScreen(modifier)
+            UpdateProfileScreen(modifier, sharedViewModel = sharedViewModel)
         }
     }
 }

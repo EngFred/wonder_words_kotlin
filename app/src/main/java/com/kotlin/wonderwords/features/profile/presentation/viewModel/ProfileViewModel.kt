@@ -1,32 +1,114 @@
 package com.kotlin.wonderwords.features.profile.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kotlin.wonderwords.core.network.DataState
+import com.kotlin.wonderwords.features.profile.domain.usecases.GetUserDetailsUseCase
+import com.kotlin.wonderwords.features.profile.domain.usecases.SignOutUserUseCase
 import com.kotlin.wonderwords.features.profile.presentation.screen.ProfileUiEvents
 import com.kotlin.wonderwords.features.profile.presentation.screen.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-
+    private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val signOutUserUseCase: SignOutUserUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState = _uiState.asStateFlow()
 
+    init {
+        getUserDetails()
+    }
+
     fun onEvent(event: ProfileUiEvents) {
+        reset()
         when(event) {
-            is ProfileUiEvents.ThemeChange -> {
-                if ( _uiState.value.selectTheme != event.theme ) {
+            ProfileUiEvents.LoggedOut -> {
+                _uiState.update {
+                    it.copy(
+                        signingOut = true
+                    )
+                }
+                signOut()
+            }
+        }
+    }
+
+    private fun getUserDetails() = viewModelScope.launch {
+        getUserDetailsUseCase().collectLatest { dataState ->
+            when(dataState) {
+                is DataState.Error -> {
                     _uiState.update {
                         it.copy(
-                            selectTheme = event.theme
+                            isLoading = false,
+                            error = dataState.error
                         )
                     }
                 }
+                DataState.Loading -> {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+                is DataState.Success -> {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            user = dataState.data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun signOut() = viewModelScope.launch(Dispatchers.IO) {
+        val dataState = signOutUserUseCase()
+
+        when(dataState) {
+            is DataState.Error -> {
+                _uiState.update {
+                    it.copy(
+                        signingOut = false,
+                        signOutError = dataState.error
+                    )
+                }
+            }
+            DataState.Loading -> {
+                _uiState.update {
+                    it.copy(
+                        signingOut = true
+                    )
+                }
+            }
+            is DataState.Success -> {
+                _uiState.update {
+                    it.copy(
+                        signOutSuccess = true
+                    )
+                }
+            }
+        }
+    }
+
+    fun reset() {
+        if (_uiState.value.signOutError != null || _uiState.value.error != null) {
+            _uiState.update {
+                it.copy(
+                    signOutError = null,
+                    error = null
+                )
             }
         }
     }

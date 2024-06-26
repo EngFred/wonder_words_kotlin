@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.profile.presentation.screen
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,17 +20,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
+import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.domain.entity.User
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
-import com.kotlin.wonderwords.features.profile.domain.entity.ThemeMode
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 import com.kotlin.wonderwords.features.profile.presentation.common.RadioButtonTile
 import com.kotlin.wonderwords.features.profile.presentation.common.UserMainInfo
 import com.kotlin.wonderwords.features.profile.presentation.viewModel.ProfileViewModel
@@ -38,20 +46,57 @@ import com.kotlin.wonderwords.features.profile.presentation.viewModel.ProfileVie
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     onUpdateProfile: () -> Unit,
+    onSignOut: () -> Unit,
+    sharedViewModel: SharedViewModel,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
 
     val uiState = profileViewModel.uiState.collectAsState().value
+
+    val currentTheme = sharedViewModel.currentTheme.collectAsState().value
+
+    val textColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
+
+    val context = LocalContext.current
+
+    SetSystemBarColor(isAuth = false, sharedViewModel = sharedViewModel)
+
+    LaunchedEffect( uiState.signOutSuccess ) {
+        if ( uiState.signOutSuccess ) {
+            onSignOut()
+        }
+    }
+
+    LaunchedEffect( uiState.signOutError ) {
+        if ( uiState.signOutError != null ) {
+            showToast(context, "Something went wrong")
+        }
+    }
+
+    LaunchedEffect( uiState.error ) {
+        if ( uiState.error != null ) {
+            showToast(context, uiState.error)
+        }
+    }
+
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            profileViewModel.reset()
+        }
+    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        UserMainInfo(user = User())
+        UserMainInfo(user = uiState.user, isLoading = uiState.isLoading)
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedButton(
-            onClick = onUpdateProfile,
+            onClick = {
+                if ( !uiState.signingOut  ) {
+                    onUpdateProfile()
+                } },
             modifier = Modifier
                 .padding(horizontal = 10.dp)
                 .fillMaxWidth()
@@ -63,9 +108,13 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Update info", fontSize = 20.sp)
+                Text(text = "Update info", fontSize = 20.sp, color = textColor)
                 Spacer(modifier = Modifier.width(12.dp))
-                Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = null )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
+                    contentDescription = null,
+                    tint = textColor
+                )
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -77,27 +126,46 @@ fun ProfileScreen(
             textAlign = TextAlign.Center
         )
         RadioButtonTile(
-            selected = { uiState.selectTheme == ThemeMode.Light },
-            onClick = { profileViewModel.onEvent(ProfileUiEvents.ThemeChange(ThemeMode.Light)) },
-            label = "Light Theme"
+            textColor = textColor,
+            selected = { currentTheme == ThemeMode.Light  },
+            onClick = {
+                if (currentTheme != ThemeMode.Light && !uiState.signingOut  ) {
+                    sharedViewModel.saveTheme(ThemeMode.Light)
+                }
+            },
+            label = "Light Theme",
         )
         RadioButtonTile(
-            selected = { uiState.selectTheme == ThemeMode.Dark },
-            onClick = { profileViewModel.onEvent(ProfileUiEvents.ThemeChange(ThemeMode.Dark)) },
+            textColor = textColor,
+            selected = { currentTheme == ThemeMode.Dark },
+            onClick = {
+                if ( currentTheme != ThemeMode.Dark && !uiState.signingOut  ) {
+                    sharedViewModel.saveTheme(ThemeMode.Dark)
+                }
+            },
             label = "Dark Theme"
         )
         RadioButtonTile(
-            selected = { uiState.selectTheme == ThemeMode.System },
-            onClick = { profileViewModel.onEvent(ProfileUiEvents.ThemeChange(ThemeMode.System)) },
-            label = "Use system settings"
+            textColor = textColor,
+            selected = { currentTheme == ThemeMode.System },
+            onClick = {
+                if ( currentTheme != ThemeMode.System && !uiState.signingOut ) {
+                    sharedViewModel.saveTheme(ThemeMode.System)
+                }
+            },
+            label = "Use System Theme"
         )
         Spacer(modifier = Modifier.weight(1f))
         AuthButton(
             modifier = Modifier.padding(horizontal = 30.dp),
             text = "Sign out",
-            onClick = { /*TODO*/ },
+            onClick = {
+               if ( !uiState.signingOut ) {
+                   profileViewModel.onEvent(ProfileUiEvents.LoggedOut)
+               }
+            },
             icon = Icons.AutoMirrored.Rounded.Logout,
-            isLoading = { false }
+            isLoading = { uiState.signingOut  }
         )
     }
 }

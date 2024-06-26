@@ -1,7 +1,7 @@
 package com.kotlin.wonderwords.features.profile.presentation.screen
 
-import com.kotlin.wonderwords.features.profile.domain.entity.ThemeMode
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 
 sealed class ProfileUiEvents {
-    data class ThemeChange( val theme: ThemeMode ) : ProfileUiEvents()
+    data object LoggedOut : ProfileUiEvents()
 }

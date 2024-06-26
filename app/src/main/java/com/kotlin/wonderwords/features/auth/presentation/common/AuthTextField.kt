@@ -86,7 +86,9 @@ fun AuthTextField(
 @Preview(showBackground = true)
 @Composable
 private fun AuthTextFieldPreview() {
-    WonderWordsTheme {
+    WonderWordsTheme(
+        darkTheme = false
+    ) {
         AuthTextField(
             placeHolder = "Email",
             onTextChange = {},
@@ -100,7 +102,9 @@ private fun AuthTextFieldPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun AuthTextFieldPreview2() {
-    WonderWordsTheme {
+    WonderWordsTheme(
+        darkTheme = false
+    ) {
         AuthTextField(
             placeHolder = "Password",
             onTextChange = {},

@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.auth.presentation.screens.forgot_password
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,20 +23,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.auth.presentation.viewModel.ForgotPasswordViewModel
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
     onLogin: () -> Unit,
+    sharedViewModel: SharedViewModel,
     forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel()
 ) {
-    SetSystemBarColor(barColor = Color.Black)
+    SetSystemBarColor(sharedViewModel = sharedViewModel, isAuth = true)
 
     val uiState = forgotPasswordViewModel.uiState.collectAsState().value
+
+    val currentTheme = sharedViewModel.currentTheme.collectAsState().value
+    val clickableTextColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -62,7 +70,9 @@ fun ForgotPasswordScreen(
         Spacer(modifier = Modifier.size(16.dp))
         ClickableText(text = buildAnnotatedString {
             append("Remember password?")
-        }, onClick = { onLogin() })
+        }, onClick = { onLogin() }, style = TextStyle(
+            color = clickableTextColor
+        ))
 
     }
 }

@@ -121,6 +121,9 @@ dependencies {
     //more material icons
     implementation("androidx.compose.material:material-icons-extended")
 
+    //coil
+    implementation(libs.coil.compose)
+
 }
 
 kapt {

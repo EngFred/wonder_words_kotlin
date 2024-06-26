@@ -4,6 +4,7 @@ import com.kotlin.wonderwords.BuildConfig
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
+import com.kotlin.wonderwords.features.profile.data.api.UserProfileApiService
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
 import dagger.Module
 import dagger.Provides
@@ -82,5 +83,11 @@ object NetworkModule {
     @Singleton
     fun providesQuoteDetailsApiService( retrofit: Retrofit ) : QuoteDetailsApiService {
         return  retrofit.create(QuoteDetailsApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesUserProfileApiService( retrofit: Retrofit ) : UserProfileApiService {
+        return retrofit.create(UserProfileApiService::class.java)
     }
 }

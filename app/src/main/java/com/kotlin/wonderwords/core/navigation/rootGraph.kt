@@ -6,12 +6,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.kotlin.wonderwords.core.presentation.SplashScreen
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.auth.presentation.nav.authGraph
 import com.kotlin.wonderwords.home.HomeScreen
 
 @Composable
 fun RootNavGraph(
     modifier: Modifier = Modifier,
+    sharedViewModel: SharedViewModel,
     navController: NavHostController
 ){
 
@@ -33,12 +35,20 @@ fun RootNavGraph(
                             inclusive = true
                         }
                     }
-                }
+                }, sharedViewModel = sharedViewModel
             )
         }
-        authGraph(navController, modifier)
+        authGraph(navController, modifier, sharedViewModel)
         composable(Graphs.HOME) {
-            HomeScreen()
+            HomeScreen(
+                sharedViewModel = sharedViewModel,
+                onSignOut = {
+                navController.navigate(Graphs.AUTH_GRAPH){
+                    popUpTo(Graphs.HOME){
+                        inclusive = true
+                    }
+                }
+            })
         }
     }
 }

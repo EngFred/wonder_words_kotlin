@@ -7,11 +7,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.kotlin.wonderwords.core.navigation.DetailRoutes
 import com.kotlin.wonderwords.core.navigation.Graphs
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.profile.presentation.screen.ProfileScreen
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesScreen
 
 @Composable
-fun HomeNavGraph(modifier: Modifier = Modifier, navController: NavHostController) {
+fun HomeNavGraph(
+    modifier: Modifier = Modifier,
+    sharedViewModel: SharedViewModel,
+    navController: NavHostController,
+    onSignOut: () -> Unit
+) {
     NavHost(
         navController = navController,
         route = Graphs.HOME,
@@ -24,17 +30,24 @@ fun HomeNavGraph(modifier: Modifier = Modifier, navController: NavHostController
                         launchSingleTop = true
                     }
                 },
-                modifier = modifier
+                modifier = modifier,
+                sharedViewModel = sharedViewModel
             )
         }
         composable(BottomBarNavRoutes.Profile.destination) {
-            ProfileScreen(modifier, onUpdateProfile = {
-                navController.navigate(DetailRoutes.UpdateProfile.destination){
-                    launchSingleTop = true
-                }
-            })
+            ProfileScreen(
+                modifier,
+                onUpdateProfile = {
+                    navController.navigate(DetailRoutes.UpdateProfile.destination) {
+                        launchSingleTop = true
+                    }
+                },
+                sharedViewModel = sharedViewModel,
+                onSignOut = onSignOut
+            )
         }
 
-        detailGraph(navController, modifier)
+        detailGraph(navController = navController, modifier = modifier, sharedViewModel = sharedViewModel)
     }
 }
+

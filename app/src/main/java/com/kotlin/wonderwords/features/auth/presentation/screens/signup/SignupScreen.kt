@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.auth.presentation.screens.signup
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,30 +22,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.auth.presentation.viewModel.SignupViewModel
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
     onLogin: () -> Unit,
     onSignupSuccess: () -> Unit,
+    sharedViewModel: SharedViewModel,
     signupViewModel: SignupViewModel = hiltViewModel()
 ) {
-    SetSystemBarColor(barColor = Color.Black)
+    SetSystemBarColor(sharedViewModel = sharedViewModel, isAuth = true)
 
     val context = LocalContext.current
 
     val uiState = signupViewModel.uiState.collectAsState().value
+
+    val currentTheme = sharedViewModel.currentTheme.collectAsState().value
+    val clickableTextColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
 
     LaunchedEffect(key1 = uiState.signupError, key2 = uiState.isLoading ) {
         if (uiState.signupError != null && !uiState.isLoading) {
@@ -147,7 +155,9 @@ fun SignupScreen(
                 if (!uiState.isLoading) {
                     onLogin()
                 }
-            })
+            }, style = TextStyle(
+                color = clickableTextColor
+            ))
         }
     }
 }

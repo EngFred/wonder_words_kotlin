@@ -8,9 +8,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 
 @Composable
-fun UpdateProfileScreen(modifier: Modifier = Modifier) {
+fun UpdateProfileScreen(
+    modifier: Modifier = Modifier,
+    sharedViewModel: SharedViewModel
+) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(
             text = "Update profile",

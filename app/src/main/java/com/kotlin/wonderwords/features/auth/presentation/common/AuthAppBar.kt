@@ -59,7 +59,9 @@ fun AuthAppBar(
 @Preview(showBackground = true)
 @Composable
 private fun AuthAppBarPreview() {
-    WonderWordsTheme {
+    WonderWordsTheme(
+        darkTheme = true
+    ) {
         AuthAppBar(onClose = { /*TODO*/ }, text = "Login")
     }
 }

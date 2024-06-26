@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.details.presentation.common.DetailsAppbar
 import com.kotlin.wonderwords.features.details.presentation.common.MainBody
 import com.kotlin.wonderwords.features.details.presentation.viewModel.QuoteDetailViewModel
@@ -19,6 +20,7 @@ fun QuoteDetailsScreen(
     modifier: Modifier = Modifier,
     quoteId: Int,
     onBack: () -> Unit,
+    sharedViewModel: SharedViewModel,
     quoteDetailsViewModel: QuoteDetailViewModel = hiltViewModel()
 ) {
 
