@@ -40,7 +40,7 @@ fun AuthTextField(
     imeAction: ImeAction = ImeAction.Next,
     leadingIcon: @Composable (() -> Unit),
     isPassword: Boolean = false,
-    isError: () -> Boolean,
+    isError: () -> Boolean? = { null },
     errorMessage: () -> String? = { null }
 ) {
 
@@ -49,9 +49,9 @@ fun AuthTextField(
 
     TextField(
         value = value(),
-        isError = isError(),
+        isError = isError() ?: false,
         supportingText = {
-            if (isError()) {
+            if (isError() == true) {
                 Text(text = errorMessage() ?: "")
             }
         },

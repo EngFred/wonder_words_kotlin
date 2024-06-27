@@ -37,8 +37,8 @@ fun HomeNavGraph(
         composable(BottomBarNavRoutes.Profile.destination) {
             ProfileScreen(
                 modifier,
-                onUpdateProfile = {
-                    navController.navigate(DetailRoutes.UpdateProfile.destination) {
+                onUpdateProfile = { username, email ->
+                    navController.navigate("${DetailRoutes.UpdateProfile.destination}/$username/$email") {
                         launchSingleTop = true
                     }
                 },

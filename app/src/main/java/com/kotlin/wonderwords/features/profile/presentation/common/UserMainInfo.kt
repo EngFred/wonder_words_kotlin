@@ -25,21 +25,19 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.imageLoader
-import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
-import com.kotlin.wonderwords.features.auth.domain.entity.User
 import com.kotlin.wonderwords.features.profile.domain.model.UserProfileDetails
 
 @Composable
 fun UserMainInfo(
     modifier: Modifier = Modifier,
-    user: UserProfileDetails?,
-    isLoading: Boolean = true
+    userProfileInfo: UserProfileDetails?,
+    isLoading: Boolean = true,
+    username: String,
+    userEmail: String
 ) {
 
     val context = LocalContext.current
@@ -68,7 +66,7 @@ fun UserMainInfo(
             )
 
             AsyncImage(
-                model = user?.picUrl,
+                model = userProfileInfo?.picUrl,
                 contentDescription = null,
                 imageLoader = context.imageLoader,
                 contentScale = ContentScale.Crop,
@@ -83,13 +81,13 @@ fun UserMainInfo(
 
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = if( !isLoading && (user?.name != null) ) user.name.replaceFirstChar { it.uppercase() } else "-",
+            text = username.replaceFirstChar { it.uppercase() },
             fontSize = 22.sp,
             fontWeight = FontWeight.ExtraBold,
             maxLines = 2,
             textAlign = TextAlign.Center
         )
-        Text(text = if( !isLoading && (user?.accountDetails?.email != null))  user.accountDetails.email else "-")
+        Text(text = userEmail)
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
@@ -97,12 +95,12 @@ fun UserMainInfo(
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp, vertical = 5.dp)
         ) {
-            if( !isLoading && (user?.following != null)  && (user.followers != null)) {
+            if( !isLoading && (userProfileInfo?.following != null)  && (userProfileInfo.followers != null)) {
                 Text(text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(fontWeight = FontWeight.Bold)
                     ) {
-                        append(user.following.toString())
+                        append(userProfileInfo.following.toString())
                     }
                     append(" Following")
                 })
@@ -111,7 +109,7 @@ fun UserMainInfo(
                     withStyle(
                         style = SpanStyle(fontWeight = FontWeight.Bold)
                     ) {
-                        append(user.followers.toString())
+                        append(userProfileInfo.followers.toString())
                     }
                     append(" Followers")
                 })

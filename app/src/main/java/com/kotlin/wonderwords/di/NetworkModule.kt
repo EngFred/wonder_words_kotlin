@@ -6,6 +6,7 @@ import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.profile.data.api.UserProfileApiService
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
+import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -89,5 +90,11 @@ object NetworkModule {
     @Singleton
     fun providesUserProfileApiService( retrofit: Retrofit ) : UserProfileApiService {
         return retrofit.create(UserProfileApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesUpdateUserApiService( retrofit: Retrofit ) : UpdateUserApiService {
+        return retrofit.create(UpdateUserApiService::class.java)
     }
 }

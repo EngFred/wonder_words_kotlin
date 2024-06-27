@@ -24,8 +24,13 @@ class AuthRepositoryImpl @Inject constructor(
             val apiResponse = authApiService.signUp(signupRequest)
             Log.i(TAG, "$apiResponse")
             if (apiResponse.userToken != null && apiResponse.userName != null) {
-                tokenManager.saveUserInfo(apiResponse.userToken, apiResponse.userName)
-                Log.i(TAG, "User info saved successfully!")
+                tokenManager.saveUserToken(apiResponse.userToken)
+                tokenManager.saveUsername(apiResponse.userName)
+                tokenManager.saveUserEmail(signupRequest.user.email!!)
+                Log.i(TAG, "User info saved successfully!\n" +
+                        "Username: ${apiResponse.userName}\n" +
+                        "UserEmail: ${apiResponse.email}\n" +
+                        "UserToken: ${apiResponse.userToken}")
                 return DataState.Success(apiResponse)
             }
             Log.i(TAG, "Login failed! userToken or userName returned is null!")
@@ -41,9 +46,11 @@ class AuthRepositoryImpl @Inject constructor(
             Log.i(TAG, "Logging in with request body $signInRequest....")
             val apiResponse = authApiService.signIn(signInRequest)
             Log.i(TAG, "$apiResponse")
-            if (apiResponse.userToken != null && apiResponse.userName != null) {
-                tokenManager.saveUserInfo(apiResponse.userToken, apiResponse.userName)
-                Log.i(TAG, "User info saved successfully!")
+            if (apiResponse.userToken != null && apiResponse.userName != null && apiResponse.email != null) {
+                tokenManager.saveUserToken(apiResponse.userToken)
+                tokenManager.saveUsername(apiResponse.userName)
+                tokenManager.saveUserEmail(apiResponse.email)
+                Log.v(TAG, "User info saved successfully!\nUsername: ${apiResponse.userName}\nUserEmail: ${apiResponse.email}\nUserToken: ${apiResponse.userToken}")
                 return DataState.Success(apiResponse)
             }
             Log.i(TAG, "Login failed! userToken or userName returned is null!")

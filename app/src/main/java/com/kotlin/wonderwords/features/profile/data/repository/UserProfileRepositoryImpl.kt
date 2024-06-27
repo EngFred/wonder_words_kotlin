@@ -44,13 +44,13 @@ class UserProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun signOutUser() : DataState<String> {
+    override suspend fun signOutUser() : DataState<Unit> {
         return try {
             val signOutResponse = userProfileApiService.signOutUser()
             if ( signOutResponse.errorCode == null && signOutResponse.message != null ) {
                 quotesDatabase.quotesDao().deleteQuotes()
                 tokenManager.clearUserInfo()
-                DataState.Success(signOutResponse.message)
+                DataState.Success(Unit)
             } else {
                 DataState.Error("Something went wrong!")
             }

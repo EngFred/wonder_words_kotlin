@@ -12,7 +12,7 @@ import com.kotlin.wonderwords.core.navigation.DetailRoutes
 import com.kotlin.wonderwords.core.navigation.Graphs
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.details.presentation.screen.QuoteDetailsScreen
-import com.kotlin.wonderwords.features.profile.presentation.screen.UpdateProfileScreen
+import com.kotlin.wonderwords.features.user_update.presentation.screens.UpdateUserScreen
 
 fun NavGraphBuilder.detailGraph(
     navController: NavHostController,
@@ -35,12 +35,31 @@ fun NavGraphBuilder.detailGraph(
         }
 
         composable(
-            route = DetailRoutes.UpdateProfile.destination,
+            route = "${DetailRoutes.UpdateProfile.destination}/{username}/{email}",
+            arguments = listOf(
+                navArgument("username") {
+                    type = NavType.StringType
+                },
+                navArgument("email") {
+                    type = NavType.StringType
+                }
+            ),
             enterTransition = {
                 slideInHorizontally()
             }
-        ) {
-            UpdateProfileScreen(modifier, sharedViewModel = sharedViewModel)
+        ) { navBackStackEntry ->
+
+            val username = navBackStackEntry.arguments?.getString("username")!!
+            val email = navBackStackEntry.arguments?.getString("email")!!
+            UpdateUserScreen(
+                modifier = modifier,
+                sharedViewModel = sharedViewModel,
+                onUpdateSuccess = {
+                    navController.popBackStack()
+                },
+                username = username,
+                email = email
+            )
         }
     }
 }

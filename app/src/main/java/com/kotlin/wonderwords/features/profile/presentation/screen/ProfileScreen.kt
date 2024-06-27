@@ -35,7 +35,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
-import com.kotlin.wonderwords.features.auth.domain.entity.User
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 import com.kotlin.wonderwords.features.profile.presentation.common.RadioButtonTile
@@ -45,7 +44,7 @@ import com.kotlin.wonderwords.features.profile.presentation.viewModel.ProfileVie
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    onUpdateProfile: () -> Unit,
+    onUpdateProfile: (String, String) -> Unit,
     onSignOut: () -> Unit,
     sharedViewModel: SharedViewModel,
     profileViewModel: ProfileViewModel = hiltViewModel()
@@ -54,6 +53,8 @@ fun ProfileScreen(
     val uiState = profileViewModel.uiState.collectAsState().value
 
     val currentTheme = sharedViewModel.currentTheme.collectAsState().value
+    val username = sharedViewModel.username.collectAsState().value
+    val email = sharedViewModel.userEmail.collectAsState().value
 
     val textColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
 
@@ -90,12 +91,24 @@ fun ProfileScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        UserMainInfo(user = uiState.user, isLoading = uiState.isLoading)
+        UserMainInfo(
+            userProfileInfo = uiState.user,
+            isLoading = uiState.isLoading,
+            username = username,
+            userEmail = email
+        )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedButton(
             onClick = {
-                if ( !uiState.signingOut  ) {
-                    onUpdateProfile()
+                if ( !uiState.signingOut ) {
+                    if ( uiState.user != null ) {
+                        onUpdateProfile(
+                            username,
+                            email
+                        )
+                    } else {
+                        showToast(context, "User session not found!")
+                    }
                 } },
             modifier = Modifier
                 .padding(horizontal = 10.dp)

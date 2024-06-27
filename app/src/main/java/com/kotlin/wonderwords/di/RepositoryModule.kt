@@ -14,6 +14,9 @@ import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.repository.QuotesRepositoryImpl
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
+import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
+import com.kotlin.wonderwords.features.user_update.data.repository.UpdateUserInfoRepositoryImpl
+import com.kotlin.wonderwords.features.user_update.domain.repository.UpdateUserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -64,5 +67,14 @@ object RepositoryModule {
         quotesDatabase: QuotesDatabase
     ): UserProfileRepository {
         return UserProfileRepositoryImpl(userProfileApiService, tokenManager, quotesDatabase)
+    }
+
+    @Provides
+    @Singleton
+    fun providesUpdateUserRepository(
+        updateUserApiService: UpdateUserApiService,
+        tokenManager: TokenManager
+    ): UpdateUserRepository {
+        return UpdateUserInfoRepositoryImpl(updateUserApiService,tokenManager)
     }
 }

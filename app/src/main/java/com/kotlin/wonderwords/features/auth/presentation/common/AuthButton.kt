@@ -38,11 +38,13 @@ fun AuthButton(
     height: Dp = 75.dp,
     icon: ImageVector = Icons.AutoMirrored.Rounded.Login,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
-    isLoading: () -> Boolean
+    isLoading: () -> Boolean,
+    enabled: Boolean = true
 ) {
 
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
             .height(height)

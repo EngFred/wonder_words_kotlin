@@ -19,19 +19,39 @@ class TokenManager @Inject constructor(
     companion object {
         val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
         val USER_NAME = stringPreferencesKey("USER_NAME")
+        val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
         const val TAG = "TokenManager"
     }
 
     @Volatile
     private var cachedToken: String? = null
 
-    suspend fun saveUserInfo( userToken: String, userName: String ) {
+    suspend fun saveUserToken( userToken: String ) {
         try {
             datastore.edit { pref ->
                 pref[USER_TOKEN] = userToken
-                pref[USER_NAME] = userName
             }
             cachedToken = userToken
+        } catch (e: Exception) {
+            Log.d(TAG, e.message.toString())
+        }
+    }
+
+    suspend fun saveUsername( username: String ) {
+        try {
+            datastore.edit { pref ->
+                pref[USER_NAME] = username
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, e.message.toString())
+        }
+    }
+
+    suspend fun saveUserEmail( email: String ) {
+        try {
+            datastore.edit { pref ->
+                pref[USER_EMAIL] = email
+            }
         } catch (e: Exception) {
             Log.d(TAG, e.message.toString())
         }
@@ -49,10 +69,17 @@ class TokenManager @Inject constructor(
         Log.d(TAG, throwable.message.toString())
     }
 
+    val getUserEmail : Flow<String> = datastore.data.map {  pref ->
+        pref[USER_EMAIL] ?: ""
+    }.distinctUntilChanged().catch { throwable ->
+        Log.d(TAG, throwable.message.toString())
+    }
+
     suspend fun clearUserInfo() {
         datastore.edit { preferences ->
             preferences.remove(USER_TOKEN)
             preferences.remove(USER_NAME)
+            preferences.remove(USER_EMAIL)
         }
         cachedToken = null
     }
