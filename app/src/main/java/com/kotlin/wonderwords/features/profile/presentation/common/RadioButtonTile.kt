@@ -19,7 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 
 @Composable
 fun RadioButtonTile(
@@ -43,7 +45,7 @@ fun RadioButtonTile(
                 selectedColor = textColor,
             ))
             Spacer(modifier = Modifier.width(10.dp))
-            Text(text = label, color = textColor)
+            Text(text = label, color = textColor, fontFamily = poppins, fontWeight = FontWeight.Bold)
         }
     }
 

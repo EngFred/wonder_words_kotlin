@@ -12,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 
 @Composable
 fun BottomBar(modifier: Modifier = Modifier, navController: NavHostController) {
@@ -44,7 +46,7 @@ fun BottomBar(modifier: Modifier = Modifier, navController: NavHostController) {
                         }
                     },
                     icon = { Icon(imageVector = navItem.icon, contentDescription = navItem.label) },
-                    label = { Text(text = navItem.label) }
+                    label = { Text(text = navItem.label, fontFamily = poppins, fontWeight = FontWeight.SemiBold) }
                 )
             }
         }

@@ -25,11 +25,14 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.imageLoader
+import com.kotlin.wonderwords.core.presentation.theme.poppins
+import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 import com.kotlin.wonderwords.features.profile.domain.model.UserProfileDetails
 
 @Composable
@@ -86,10 +89,17 @@ fun UserMainInfo(
             text = username.replaceFirstChar { it.uppercase() },
             fontSize = 22.sp,
             fontWeight = FontWeight.ExtraBold,
+            fontFamily = poppinsBold,
             maxLines = 2,
             textAlign = TextAlign.Center
         )
-        Text(text = userEmail)
+        Text(
+            text = userEmail,
+            fontFamily = poppins,
+            fontWeight = FontWeight.ExtraBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
@@ -104,20 +114,32 @@ fun UserMainInfo(
 
                 Text(text = buildAnnotatedString {
                     withStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                        style = SpanStyle(fontWeight = FontWeight.Bold, fontFamily = poppinsBold)
                     ) {
                         append(following.toString())
                     }
-                    append(" Following")
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = poppins, fontWeight = FontWeight.ExtraBold
+                        )
+                    ) {
+                        append(" Following")
+                    }
                 })
 
                 Text(text = buildAnnotatedString {
                     withStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                        style = SpanStyle(fontWeight = FontWeight.Bold, fontFamily = poppinsBold)
                     ) {
                         append(followers.toString())
                     }
-                    append(" Followers")
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = poppins, fontWeight = FontWeight.ExtraBold
+                        )
+                    ) {
+                        append(" Following")
+                    }
                 })
                 Log.wtf("#", "Following: ${userProfileInfo.following}\nFollowers: ${userProfileInfo.followers}")
 

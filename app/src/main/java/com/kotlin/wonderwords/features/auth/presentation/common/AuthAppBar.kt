@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
+import com.kotlin.wonderwords.core.presentation.theme.poppins
+import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 
 @Composable
 fun AuthAppBar(
@@ -46,9 +48,10 @@ fun AuthAppBar(
         }
         Text(
             text = text,
-            fontWeight = FontWeight.ExtraBold,
             fontSize = textSize,
             color = Color.White,
+            fontFamily = poppinsBold,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.align(
                 Alignment.Center
             )

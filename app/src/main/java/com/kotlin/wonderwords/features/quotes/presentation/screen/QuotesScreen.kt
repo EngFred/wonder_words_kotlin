@@ -21,10 +21,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.theme.DarkSlateGrey
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
@@ -140,7 +142,7 @@ private fun CategoriesList(
                     }
                 )
             ) {
-                Text(text = category.name)
+                Text(text = category.name,fontFamily = poppins, fontWeight = FontWeight.SemiBold)
             }
             Spacer(modifier = Modifier.width(6.dp))
         }

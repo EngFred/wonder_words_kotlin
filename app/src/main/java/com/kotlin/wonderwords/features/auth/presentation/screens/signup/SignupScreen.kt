@@ -24,11 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
@@ -147,7 +149,8 @@ fun SignupScreen(
                 }
             }, isLoading = {uiState.isLoading})
             Spacer(modifier = Modifier.size(16.dp))
-            Text(text = "Already registered?")
+            Text(text = "Already registered?", fontFamily = poppins,
+                fontWeight = FontWeight.ExtraBold)
             Spacer(modifier = Modifier.size(16.dp))
             ClickableText(text = buildAnnotatedString {
                 append("Login")
@@ -156,6 +159,8 @@ fun SignupScreen(
                     onLogin()
                 }
             }, style = TextStyle(
+                fontFamily = poppins,
+                fontWeight = FontWeight.ExtraBold,
                 color = clickableTextColor
             ))
         }

@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.quotes.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,11 +21,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
+import com.kotlin.wonderwords.core.presentation.theme.playWrite
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 
 @Composable
@@ -64,8 +70,9 @@ fun QuoteItem(
             }
             Text(
                 text = quote.body ?: "null",
-                style = MaterialTheme.typography.bodyLarge,
+                fontFamily = playWrite,
                 maxLines = 4,
+                fontWeight = FontWeight.SemiBold,
                 overflow = TextOverflow.Ellipsis
             )
             Icon(
@@ -78,7 +85,9 @@ fun QuoteItem(
             Text(
                 text = "- ${quote.author}",
                 style = MaterialTheme.typography.bodyMedium,
+                fontFamily = poppins,
                 maxLines = 1,
+                textAlign = TextAlign.End,
                 modifier = Modifier.align(Alignment.End)
             )
         }

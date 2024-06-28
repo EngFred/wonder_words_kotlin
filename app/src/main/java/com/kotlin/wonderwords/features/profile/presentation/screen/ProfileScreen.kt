@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.theme.poppins
+import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
@@ -131,7 +133,13 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Update info", fontSize = 20.sp, color = textColor)
+                Text(
+                    text = "Update Info",
+                    fontSize = 20.sp,
+                    color = textColor,
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold
+                )
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
@@ -140,11 +148,11 @@ fun ProfileScreen(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = "Theme Preferences",
-            fontWeight = FontWeight.SemiBold,
             fontSize = 18.sp,
+            fontFamily = poppinsBold,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
@@ -176,7 +184,7 @@ fun ProfileScreen(
                     sharedViewModel.saveTheme(ThemeMode.System)
                 }
             },
-            label = "Use System Theme"
+            label = "Use Device Theme"
         )
         Spacer(modifier = Modifier.weight(1f))
         AuthButton(

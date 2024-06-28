@@ -23,11 +23,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
@@ -114,7 +116,9 @@ fun LoginScreen(
                     onForgotPassword()
                 }
             }, style = TextStyle(
-                color = clickableTextColor
+                color = clickableTextColor,
+                fontFamily = poppins,
+                fontWeight = FontWeight.Bold
             ))
             Spacer(modifier = Modifier.size(16.dp))
             AuthButton(text = "Login", onClick = {
@@ -127,7 +131,9 @@ fun LoginScreen(
                 }
             }, isLoading = {uiState.isLoading})
             Spacer(modifier = Modifier.size(16.dp))
-            Text(text = "Don't have an account?")
+            Text(text = "Don't have an account?",
+                fontFamily = poppins,
+                fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.size(16.dp))
             ClickableText(text = buildAnnotatedString {
                 append("Signup")
@@ -136,7 +142,9 @@ fun LoginScreen(
                     onSignup()
                 }
             }, style = TextStyle(
-                color = clickableTextColor
+                color = clickableTextColor,
+                fontFamily = poppins,
+                fontWeight = FontWeight.ExtraBold
             ))
         }
     }

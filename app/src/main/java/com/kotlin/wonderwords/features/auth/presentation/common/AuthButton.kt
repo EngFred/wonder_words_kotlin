@@ -22,10 +22,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 
@@ -59,7 +61,7 @@ fun AuthButton(
             Row {
                 Icon(imageVector = icon , contentDescription = null, tint = Color.LightGray )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text, color = Color.LightGray )
+                Text(text, color = Color.LightGray, fontFamily = poppins, fontWeight = FontWeight.ExtraBold )
             }
         } else {
             CircularProgressIndicator(modifier = Modifier.size(40.dp), color = Color.LightGray)

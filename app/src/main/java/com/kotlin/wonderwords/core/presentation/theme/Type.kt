@@ -2,9 +2,24 @@ package com.kotlin.wonderwords.core.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.kotlin.wonderwords.R
+
+
+val playWrite = FontFamily(
+    Font(R.font.playwrite)
+)
+
+val poppins = FontFamily(
+    Font(R.font.poppins)
+)
+
+val poppinsBold = FontFamily(
+    Font(R.font.poppins_bold)
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(

@@ -6,7 +6,6 @@ import com.kotlin.wonderwords.features.quotes.data.mapper.toQuote
 import com.kotlin.wonderwords.features.quotes.data.mapper.toQuoteEntity
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
 import com.kotlin.wonderwords.features.quotes.domain.models.DataSource
-import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository

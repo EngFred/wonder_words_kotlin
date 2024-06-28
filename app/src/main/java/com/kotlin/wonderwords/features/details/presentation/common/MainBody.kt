@@ -13,10 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kotlin.wonderwords.core.presentation.theme.playWrite
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 
 @Composable
 fun MainBody(
@@ -47,7 +50,11 @@ fun MainBody(
             Text(
                 text = body,
                 fontSize = 22.sp,
-                overflow = TextOverflow.Ellipsis,
+                fontFamily = playWrite,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 40.sp,
+                maxLines = 14,
+                overflow = TextOverflow.Clip,
                 textAlign = TextAlign.Center
             )
         }
@@ -60,6 +67,10 @@ fun MainBody(
         )
         Text(
             text = "- $author",
+            maxLines = 2,
+            fontFamily = poppins,
+            fontWeight = FontWeight.SemiBold,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.align(Alignment.End)
         )
     }

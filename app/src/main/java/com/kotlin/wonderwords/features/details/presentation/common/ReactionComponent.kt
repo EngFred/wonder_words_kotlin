@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.features.details.domain.entity.ReactionType
 
 @Composable
@@ -42,7 +44,7 @@ fun ReactionComponent(
             imageVector = imageVector,
             contentDescription = null
         )
-        Text(text = "$count" , fontSize = 13.sp)
+        Text(text = "$count" , fontSize = 13.sp, fontFamily = poppins, fontWeight = FontWeight.SemiBold)
 
     }
 }

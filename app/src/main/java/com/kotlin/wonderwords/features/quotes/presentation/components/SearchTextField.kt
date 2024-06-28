@@ -1,6 +1,7 @@
 package com.kotlin.wonderwords.features.quotes.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
@@ -13,8 +14,12 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 
 @Composable
 fun SearchTextField(
@@ -30,6 +35,10 @@ fun SearchTextField(
                 Icon(imageVector = Icons.Rounded.Search, contentDescription = null )
             }
         },
+        textStyle = TextStyle(
+            fontFamily = poppins,
+            fontWeight = FontWeight.SemiBold
+        ),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
@@ -38,7 +47,7 @@ fun SearchTextField(
             cursorColor = MaterialTheme.colorScheme.primary
         ),
         maxLines = 1,
-        placeholder = { Text(text = "Search") },
+        placeholder = { Text(text = "Search", fontFamily = poppins, fontWeight = FontWeight.SemiBold) },
         modifier = modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Search),
     )

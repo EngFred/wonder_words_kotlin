@@ -22,6 +22,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 
 @Composable
 fun AuthTextField(
@@ -52,7 +55,10 @@ fun AuthTextField(
         isError = isError() ?: false,
         supportingText = {
             if (isError() == true) {
-                Text(text = errorMessage() ?: "")
+                Text(text = errorMessage() ?: "",
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.Bold
+                )
             }
         },
         onValueChange = onTextChange,
@@ -75,8 +81,12 @@ fun AuthTextField(
                  }
              }
         },
+        textStyle = TextStyle(
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        ),
         maxLines = 1,
-        placeholder = { Text(text = placeHolder) },
+        placeholder = { Text(text = placeHolder,fontFamily = poppins, fontWeight = FontWeight.Bold) },
         modifier = modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         visualTransformation = visualTransformation

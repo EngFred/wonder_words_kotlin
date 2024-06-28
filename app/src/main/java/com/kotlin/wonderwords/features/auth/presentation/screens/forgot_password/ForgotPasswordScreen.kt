@@ -17,12 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
@@ -71,6 +73,8 @@ fun ForgotPasswordScreen(
         ClickableText(text = buildAnnotatedString {
             append("Remember password?")
         }, onClick = { onLogin() }, style = TextStyle(
+            fontFamily = poppins,
+            fontWeight = FontWeight.ExtraBold,
             color = clickableTextColor
         ))
 
