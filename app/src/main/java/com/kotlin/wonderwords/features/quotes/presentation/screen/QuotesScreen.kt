@@ -27,8 +27,8 @@ import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.theme.DarkSlateGrey
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
-import com.kotlin.wonderwords.features.quotes.data.repository.Source
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.presentation.components.ErrorScreen
 import com.kotlin.wonderwords.features.quotes.presentation.components.LoadingScreen
 import com.kotlin.wonderwords.features.quotes.presentation.components.QuotesGrid
@@ -89,7 +89,7 @@ fun QuotesScreen(
                         quotes = uiState.quotes,
                         onQuoteClick = onQuoteClick,
                         onLoadMoreQuotes = {
-                            if( uiState.dataSource == Source.Remote ) {
+                            if( uiState.source == Source.Remote ) {
                                 quotesViewModel.onEvent(QuotesUiEvents.LoadedMoreQuotes)
                             }
                         }

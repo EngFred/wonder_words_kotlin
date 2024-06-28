@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kotlin.wonderwords.core.network.DataState
-import com.kotlin.wonderwords.features.quotes.data.repository.Source
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.domain.usecase.FetchQuotesUseCase
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesUiEvents
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesUiState
@@ -86,7 +86,7 @@ class QuotesViewModel @Inject constructor(
                         it.copy(
                             quotes = newQuotes,
                             initialLoading = false,
-                            dataSource = dataState.data.source
+                            source = dataState.data.source
                         )
                     }
                     currentPage++
