@@ -27,13 +27,14 @@ class AuthRepositoryImpl @Inject constructor(
                 tokenManager.saveUserToken(apiResponse.userToken)
                 tokenManager.saveUsername(apiResponse.userName)
                 tokenManager.saveUserEmail(signupRequest.user.email!!)
+                tokenManager.saveUserStatus(true)
                 Log.i(TAG, "User info saved successfully!\n" +
                         "Username: ${apiResponse.userName}\n" +
                         "UserEmail: ${apiResponse.email}\n" +
                         "UserToken: ${apiResponse.userToken}")
                 return DataState.Success(apiResponse)
             }
-            Log.i(TAG, "Login failed! userToken or userName returned is null!")
+            Log.i(TAG, "Signup failed! userToken or userName returned is null!")
             return DataState.Error(apiResponse.message ?: "Unknown error") //tho here it wont be null
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
@@ -50,6 +51,7 @@ class AuthRepositoryImpl @Inject constructor(
                 tokenManager.saveUserToken(apiResponse.userToken)
                 tokenManager.saveUsername(apiResponse.userName)
                 tokenManager.saveUserEmail(apiResponse.email)
+                tokenManager.saveUserStatus(true)
                 Log.v(TAG, "User info saved successfully!\nUsername: ${apiResponse.userName}\nUserEmail: ${apiResponse.email}\nUserToken: ${apiResponse.userToken}")
                 return DataState.Success(apiResponse)
             }

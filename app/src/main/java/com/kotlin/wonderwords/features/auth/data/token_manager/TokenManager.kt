@@ -3,6 +3,7 @@ package com.kotlin.wonderwords.features.auth.data.token_manager
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +21,7 @@ class TokenManager @Inject constructor(
         val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
         val USER_NAME = stringPreferencesKey("USER_NAME")
         val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
+        val USER_STATUS = booleanPreferencesKey("USER_STATUS")
         const val TAG = "TokenManager"
     }
 
@@ -55,6 +57,24 @@ class TokenManager @Inject constructor(
         } catch (e: Exception) {
             Log.d(TAG, e.message.toString())
         }
+    }
+
+    suspend fun saveUserStatus( signedIn: Boolean ) {
+        try {
+           datastore.edit {
+               it[USER_STATUS] = signedIn
+           }
+            Log.v("#", "User status saved: $signedIn")
+        } catch (e: Exception) {
+            Log.v("#", "User status not saved: $e")
+            Log.d(TAG, e.message.toString())
+        }
+    }
+
+    val getUserStatus : Flow<Boolean> = datastore.data.map {  pref ->
+        pref[USER_STATUS] ?: false
+    }.distinctUntilChanged().catch { throwable ->
+        Log.d(TAG, throwable.message.toString())
     }
 
     val getUserToken : Flow<String> = datastore.data.map {  pref ->

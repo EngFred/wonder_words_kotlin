@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
-import com.kotlin.wonderwords.features.quotes.domain.domain.Quote
+import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 
 @Composable
 fun QuoteItem(

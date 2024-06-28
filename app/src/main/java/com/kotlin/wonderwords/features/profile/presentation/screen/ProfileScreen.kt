@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.profile.presentation.screen
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -80,6 +81,14 @@ fun ProfileScreen(
         }
     }
 
+    LaunchedEffect( uiState.user ) {
+        if ( uiState.user != null ) {
+            Log.wtf("#", "${uiState.user}")
+        } else {
+            Log.wtf("#", "User is null")
+        }
+    }
+
     DisposableEffect(key1 = Unit) {
         onDispose {
             profileViewModel.reset()
@@ -94,6 +103,7 @@ fun ProfileScreen(
         UserMainInfo(
             userProfileInfo = uiState.user,
             isLoading = uiState.isLoading,
+            loadError = uiState.error,
             username = username,
             userEmail = email
         )

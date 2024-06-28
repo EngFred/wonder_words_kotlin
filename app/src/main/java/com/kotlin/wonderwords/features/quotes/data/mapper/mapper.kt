@@ -2,8 +2,7 @@ package com.kotlin.wonderwords.features.quotes.data.mapper
 
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteDTO
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteEntity
-import com.kotlin.wonderwords.features.quotes.domain.domain.Quote
-import com.kotlin.wonderwords.features.quotes.domain.domain.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 
 fun QuoteEntity.toQuote() : Quote {
     return Quote(

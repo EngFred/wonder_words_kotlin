@@ -28,10 +28,20 @@ class SharedViewModel @Inject constructor(
     private val _userEmail = MutableStateFlow("-")
     val userEmail = _userEmail.asStateFlow()
 
+    private val _userStatus = MutableStateFlow<Boolean?>(null)
+    val userStatus = _userStatus.asStateFlow()
+
     init {
+        getUserStatus()
         getTheme()
         getUsername()
         getUserEmail()
+    }
+
+    private fun getUserStatus() = viewModelScope.launch {
+        tokenManager.getUserStatus.collectLatest {
+            _userStatus.value = it
+        }
     }
 
     private fun getUsername() = viewModelScope.launch {

@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.profile.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ fun UserMainInfo(
     modifier: Modifier = Modifier,
     userProfileInfo: UserProfileDetails?,
     isLoading: Boolean = true,
+    loadError: String?,
     username: String,
     userEmail: String
 ) {
@@ -95,12 +97,16 @@ fun UserMainInfo(
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp, vertical = 5.dp)
         ) {
-            if( !isLoading && (userProfileInfo?.following != null)  && (userProfileInfo.followers != null)) {
+            if( !isLoading && loadError == null && userProfileInfo != null) {
+
+                val followers = userProfileInfo.followers ?: 0
+                val following = userProfileInfo.following ?: 0
+
                 Text(text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(fontWeight = FontWeight.Bold)
                     ) {
-                        append(userProfileInfo.following.toString())
+                        append(following.toString())
                     }
                     append(" Following")
                 })
@@ -109,10 +115,11 @@ fun UserMainInfo(
                     withStyle(
                         style = SpanStyle(fontWeight = FontWeight.Bold)
                     ) {
-                        append(userProfileInfo.followers.toString())
+                        append(followers.toString())
                     }
                     append(" Followers")
                 })
+                Log.wtf("#", "Following: ${userProfileInfo.following}\nFollowers: ${userProfileInfo.followers}")
 
             } else {
                 Text("-")

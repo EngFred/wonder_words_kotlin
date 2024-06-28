@@ -20,6 +20,7 @@ fun DetailsAppbar(
     onFavClick: () -> Unit,
     onUpvoteClick: () -> Unit,
     onDowvoteClick: () -> Unit,
+    onShare: () -> Unit,
     upvotesCount: Int,
     downvotesCount: Int,
     favoritesCount: Int,
@@ -39,7 +40,7 @@ fun DetailsAppbar(
         ReactionComponent(type = ReactionType.Upvote, count = upvotesCount, onClick = onUpvoteClick)
         ReactionComponent(type = ReactionType.Dowvote, count = downvotesCount, onClick = onDowvoteClick)
 
-        IconButton(onClick = {}) {
+        IconButton(onClick = onShare) {
             Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
         }
 

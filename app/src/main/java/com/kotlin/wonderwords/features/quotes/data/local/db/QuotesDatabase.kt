@@ -12,5 +12,4 @@ import com.kotlin.wonderwords.features.quotes.data.modals.QuoteEntity
 )
 abstract class QuotesDatabase : RoomDatabase() {
     abstract fun quotesDao() : QuotesDao
-
 }

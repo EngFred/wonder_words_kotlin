@@ -46,14 +46,17 @@ class UserProfileRepositoryImpl @Inject constructor(
 
     override suspend fun signOutUser() : DataState<Unit> {
         return try {
-            val signOutResponse = userProfileApiService.signOutUser()
-            if ( signOutResponse.errorCode == null && signOutResponse.message != null ) {
-                quotesDatabase.quotesDao().deleteQuotes()
-                tokenManager.clearUserInfo()
-                DataState.Success(Unit)
-            } else {
-                DataState.Error("Something went wrong!")
-            }
+            quotesDatabase.quotesDao().clearAllQuotes()
+            tokenManager.saveUserStatus(false)
+            DataState.Success(Unit)
+//            val signOutResponse = userProfileApiService.signOutUser()
+//            if ( signOutResponse.errorCode == null && signOutResponse.message != null ) {
+//                quotesDatabase.quotesDao().deleteQuotes()
+//                tokenManager.clearUserInfo()
+//                DataState.Success(Unit)
+//            } else {
+//                DataState.Error("Something went wrong!")
+//            }
         }catch (e: Exception) {
             Log.e(TAG, "Error signing out user: ${e.localizedMessage}")
             DataState.Error("Something went wrong!")

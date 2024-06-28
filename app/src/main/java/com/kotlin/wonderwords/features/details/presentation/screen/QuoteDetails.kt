@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.details.presentation.common.DetailsAppbar
 import com.kotlin.wonderwords.features.details.presentation.common.MainBody
 import com.kotlin.wonderwords.features.details.presentation.viewModel.QuoteDetailViewModel
+import com.kotlin.wonderwords.features.details.utils.shareQuote
 import com.kotlin.wonderwords.features.quotes.presentation.components.ErrorScreen
 import com.kotlin.wonderwords.features.quotes.presentation.components.LoadingScreen
 
@@ -25,6 +27,7 @@ fun QuoteDetailsScreen(
 ) {
 
     val uiState = quoteDetailsViewModel.uiState.collectAsState().value
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -58,6 +61,9 @@ fun QuoteDetailsScreen(
                         },
                         onDowvoteClick = {
                             quoteDetailsViewModel.onEvent(QuoteDetailEvents.Downvoted)
+                        },
+                        onShare = {
+                            shareQuote(context, quote)
                         },
                         isFavorite = quote.userDetails?.favorited ?: false
                     )

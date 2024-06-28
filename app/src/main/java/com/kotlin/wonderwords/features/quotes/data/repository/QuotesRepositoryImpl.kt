@@ -1,24 +1,17 @@
 package com.kotlin.wonderwords.features.quotes.data.repository
 
-import android.content.Context
-import android.util.Log
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.mapper.toQuote
+import com.kotlin.wonderwords.features.quotes.data.mapper.toQuoteEntity
 import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
-import com.kotlin.wonderwords.features.quotes.data.remote.pagination.AllQuotesPagingSource
-import com.kotlin.wonderwords.features.quotes.data.remote.pagination.QuotesByCategoryPagingSource
-import com.kotlin.wonderwords.features.quotes.domain.domain.Quote
-import com.kotlin.wonderwords.features.quotes.domain.domain.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.models.DataSource
+import com.kotlin.wonderwords.features.quotes.domain.models.Quote
+import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
+import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import okio.IOException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class QuotesRepositoryImpl @Inject constructor(
@@ -26,83 +19,63 @@ class QuotesRepositoryImpl @Inject constructor(
     private val quotesDatabase: QuotesDatabase
 ): QuotesRepository {
 
-    override suspend fun fetchQuotes(category: QuoteCategory): Flow<PagingData<Quote>> {
+    override suspend fun fetchQuotes(page: Int, category: QuoteCategory): DataState<DataSource> {
+
         if (category == QuoteCategory.All) {
-            return Pager(
-                config = PagingConfig(pageSize = 20),
-                pagingSourceFactory = { AllQuotesPagingSource(quotesApiService, quotesDatabase, category) }
-            ).flow.map {
-                it.map { quoteDtO ->
-                    quoteDtO.toQuote()
+            return try {
+                val quotesDTO = quotesApiService.getQuotes(page).quotes
+                if (page == 1) {
+                    quotesDatabase.quotesDao().clearAllQuotesByCategory(category.name.lowercase()) // for refreshing
                 }
-            }.flowOn(Dispatchers.IO)
-
-//            return if (isNetworkAvailable(context)){
-//                //quotesDatabase.quotesDao().deleteQuotesByCategory(category.name.lowercase())
-//                Log.wtf("#", "Internet is available! so getting all quotes from the service")
-//                Pager(
-//                    config = PagingConfig(pageSize = 20),
-//                    pagingSourceFactory = { AllQuotesPagingSource(quotesApiService, quotesDatabase, category) }
-//                ).flow.map {
-//                    it.map { quoteDtO ->
-//                        quoteDtO.toQuote()
-//                    }
-//                }
-//            } else {
-//                Log.wtf("#", "Internet is unavailable! so getting  quotes from the cache")
-//                Pager(
-//                    config = PagingConfig(pageSize = 20),
-//                    pagingSourceFactory = { LocalQuotesPagingSource(quotesDatabase, category) }
-//                ).flow.map {
-//                    it.map { quoteEntity ->
-//                        quoteEntity.toQuote()
-//                    }
-//                }
-//            }
-
-        }
-
-        return  Pager(
-            config = PagingConfig(
-                pageSize = 20
-            ),
-            pagingSourceFactory = { QuotesByCategoryPagingSource(quotesApiService, quotesDatabase, category.name.lowercase()) }
-        ).flow.map {
-            it.map { quote ->
-                quote.toQuote()
+                quotesDatabase.quotesDao()
+                    .insertQuotes(quotesDTO.map { it.toQuoteEntity(category.name.lowercase()) })
+                val quotes = quotesDTO.map { it.toQuote() }
+                val dataFrom = DataSource(
+                    source = Source.Remote,
+                    data = quotes
+                )
+                DataState.Success(dataFrom)
+            }catch (e: Exception){
+                if (e is IOException || e is ConnectException) {
+                    val quotes = quotesDatabase.quotesDao().getQuotes(category.name.lowercase())
+                        .map { it.toQuote() }
+                    val dataFrom = DataSource(
+                        source = Source.Cache,
+                        data = quotes
+                    )
+                    DataState.Success(dataFrom)
+                } else {
+                    DataState.Error(error = e.message.toString())
+                }
             }
-        }.flowOn(Dispatchers.IO).catch {
-            Log.e("#", "Flow error: $it")
+        } else {
+            return try {
+                val quotesDTO = quotesApiService.getQuotesByCategory(page, category.name.lowercase()).quotes
+                if (page == 1) {
+                    quotesDatabase.quotesDao().clearAllQuotesByCategory(category.name.lowercase())
+                }
+                quotesDatabase.quotesDao()
+                    .insertQuotes(quotesDTO.map { it.toQuoteEntity(category.name.lowercase()) })
+                val quotes = quotesDTO.map { it.toQuote() }
+                val dataFrom = DataSource(
+                    source = Source.Remote,
+                    data = quotes
+                )
+                DataState.Success(dataFrom)
+            } catch (e: Exception) {
+                if (e is IOException || e is ConnectException) {
+                    val quotes = quotesDatabase.quotesDao().getQuotes(category.name.lowercase())
+                        .map { it.toQuote() }
+                    val dataFrom = DataSource(
+                        source = Source.Cache,
+                        data = quotes
+                    )
+                    DataState.Success(dataFrom)
+                } else {
+                    DataState.Error(error = e.message.toString())
+                }
+            }
         }
-
-
-//        return if (isNetworkAvailable(context)) {
-//            //quotesDatabase.quotesDao().deleteQuotesByCategory(category.name.lowercase())
-//            Log.wtf("#", "Internet is available! so getting quotes by category from the service")
-//            Pager(
-//                config = PagingConfig(
-//                    pageSize = 20
-//                ),
-//                pagingSourceFactory = { QuotesByCategoryPagingSource(quotesApiService, quotesDatabase, category.name.lowercase()) }
-//            ).flow.map {
-//                it.map { quote ->
-//                    quote.toQuote()
-//                }
-//            }.flowOn(Dispatchers.IO).catch {
-//                Log.e("#", "Flow error: $it")
-//            }
-//        } else {
-//            Log.wtf("#", "Internet is unavailable! so getting  quotes from the cache")
-//            Pager(
-//                config = PagingConfig(pageSize = 20),
-//                pagingSourceFactory = { LocalQuotesPagingSource(quotesDatabase, category) }
-//            ).flow.map {
-//                it.map { quoteEntity ->
-//                    quoteEntity.toQuote()
-//                }
-//            }
-//        }
-
     }
 
 }

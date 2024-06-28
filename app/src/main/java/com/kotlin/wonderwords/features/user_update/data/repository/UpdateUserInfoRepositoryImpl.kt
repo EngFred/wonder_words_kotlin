@@ -7,7 +7,6 @@ import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
 import com.kotlin.wonderwords.features.user_update.data.models.UserUpdateResponse
 import com.kotlin.wonderwords.features.user_update.domain.models.UserUpdateRequest
 import com.kotlin.wonderwords.features.user_update.domain.repository.UpdateUserRepository
-import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class UpdateUserInfoRepositoryImpl @Inject constructor(

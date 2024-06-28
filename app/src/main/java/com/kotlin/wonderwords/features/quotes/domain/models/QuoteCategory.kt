@@ -1,4 +1,4 @@
-package com.kotlin.wonderwords.features.quotes.domain.domain
+package com.kotlin.wonderwords.features.quotes.domain.models
 
 enum class QuoteCategory {
     All,
