@@ -3,9 +3,10 @@ package com.kotlin.wonderwords.di
 import com.kotlin.wonderwords.BuildConfig
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
+import com.kotlin.wonderwords.features.create_quote.data.api.AddQuoteApiService
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.profile.data.api.UserProfileApiService
-import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
+import com.kotlin.wonderwords.features.quotes.data.api.QuotesApiService
 import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
 import dagger.Module
 import dagger.Provides
@@ -96,5 +97,11 @@ object NetworkModule {
     @Singleton
     fun providesUpdateUserApiService( retrofit: Retrofit ) : UpdateUserApiService {
         return retrofit.create(UpdateUserApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAddQuoteApiService( retrofit: Retrofit ) : AddQuoteApiService {
+        return retrofit.create(AddQuoteApiService::class.java)
     }
 }

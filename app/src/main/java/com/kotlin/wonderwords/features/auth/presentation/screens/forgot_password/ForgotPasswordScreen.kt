@@ -26,7 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
-import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
+import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.auth.presentation.viewModel.ForgotPasswordViewModel
@@ -51,7 +51,7 @@ fun ForgotPasswordScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        AuthAppBar(onClose = { /*TODO*/ }, text = "Forgot Password", textSize = 20.sp)
+        CustomAppBar(onClose = { /*TODO*/ }, text = "Forgot Password", textSize = 20.sp)
         Spacer(modifier = Modifier.size(55.dp))
         AuthTextField(
             modifier = Modifier.padding(horizontal = 16.dp),

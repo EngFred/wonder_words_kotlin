@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
-import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
+import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.user_update.presentation.viewModel.UpdateUserViewModel
@@ -64,7 +64,7 @@ fun UpdateUserScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        AuthAppBar(onClose = {
+        CustomAppBar(onClose = {
                if ( !uiState.isUpdating )    {
                    onUpdateSuccess()
                }

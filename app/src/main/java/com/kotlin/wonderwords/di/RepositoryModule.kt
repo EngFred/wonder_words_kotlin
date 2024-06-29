@@ -4,6 +4,9 @@ import com.kotlin.wonderwords.features.auth.data.repository.AuthRepositoryImpl
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.auth.domain.repository.AuthRepository
+import com.kotlin.wonderwords.features.create_quote.data.api.AddQuoteApiService
+import com.kotlin.wonderwords.features.create_quote.data.repository.AddQuoteRepositoryImpl
+import com.kotlin.wonderwords.features.create_quote.domain.repository.AddQuoteRepository
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.details.data.repository.QuoteDetailRepositoryImpl
 import com.kotlin.wonderwords.features.details.domain.repository.QuoteDetailRepository
@@ -12,7 +15,7 @@ import com.kotlin.wonderwords.features.profile.data.repository.UserProfileReposi
 import com.kotlin.wonderwords.features.profile.domain.repository.UserProfileRepository
 import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.repository.QuotesRepositoryImpl
-import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
+import com.kotlin.wonderwords.features.quotes.data.api.QuotesApiService
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
 import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
 import com.kotlin.wonderwords.features.user_update.data.repository.UpdateUserInfoRepositoryImpl
@@ -76,5 +79,13 @@ object RepositoryModule {
         tokenManager: TokenManager
     ): UpdateUserRepository {
         return UpdateUserInfoRepositoryImpl(updateUserApiService,tokenManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAddQuoteRepository(
+        addQuoteApiService: AddQuoteApiService
+    ): AddQuoteRepository {
+        return AddQuoteRepositoryImpl(addQuoteApiService)
     }
 }

@@ -32,7 +32,7 @@ import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
-import com.kotlin.wonderwords.features.auth.presentation.common.AuthAppBar
+import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.auth.presentation.viewModel.LoginViewModel
@@ -74,7 +74,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        AuthAppBar(onClose = { /*TODO*/ }, text = "Login")
+        CustomAppBar(onClose = { /*TODO*/ }, text = "Login")
         Column(
             modifier = Modifier
                 .fillMaxWidth()

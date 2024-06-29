@@ -4,16 +4,23 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.kotlin.wonderwords.R
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
@@ -27,10 +34,13 @@ fun SplashScreen(
 
     val userStatus = sharedViewModel.userStatus.collectAsState().value
 
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_lottie))
+
     LaunchedEffect(userStatus) {
         if (userStatus != null) {
             if (userStatus) {
                 Log.d("#", "navigate to home")
+                delay(5000)
                 onNavigateToHome()
             } else {
                 Log.d("#", "navigate to login")
@@ -46,7 +56,13 @@ fun SplashScreen(
             .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Loading...", fontSize = 22.sp, color = Color.Black)
-//        Image(painter = painterResource(id = R.drawable.logo_flutter), contentDescription = null, Modifier.size(170.dp) )
+
+        LottieAnimation(
+            modifier = Modifier.size(95.dp),
+            composition = composition,
+            iterations = LottieConstants.IterateForever,
+            reverseOnRepeat = true
+        )
+
     }
 }

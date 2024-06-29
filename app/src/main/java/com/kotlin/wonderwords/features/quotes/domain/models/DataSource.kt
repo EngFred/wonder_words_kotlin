@@ -2,5 +2,6 @@ package com.kotlin.wonderwords.features.quotes.domain.models
 
 data class DataSource(
     val source: Source,
-    val data: List<Quote>
+    val isLastPage: Boolean,
+    val quotes: List<Quote>
 )

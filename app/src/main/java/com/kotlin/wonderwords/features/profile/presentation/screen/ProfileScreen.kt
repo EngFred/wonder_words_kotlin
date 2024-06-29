@@ -59,7 +59,7 @@ fun ProfileScreen(
     val username = sharedViewModel.username.collectAsState().value
     val email = sharedViewModel.userEmail.collectAsState().value
 
-    val textColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
+    val textColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() && currentTheme != ThemeMode.Light ) Color.LightGray else Color.Black
 
     val context = LocalContext.current
 

@@ -24,3 +24,4 @@ val DimGrey = Color(0xFF696969)
 
 
 val SteelBlue = Color(0xFF4682B4)
+val SplashBg = Color(0xF3F3F3F3)

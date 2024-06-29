@@ -21,6 +21,10 @@ val poppinsBold = FontFamily(
     Font(R.font.poppins_bold)
 )
 
+val playWriteTitle = FontFamily(
+    Font(R.font.playwrite_title)
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(

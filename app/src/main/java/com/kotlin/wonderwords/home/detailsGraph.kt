@@ -1,6 +1,7 @@
 package com.kotlin.wonderwords.home
 
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -11,6 +12,7 @@ import androidx.navigation.navigation
 import com.kotlin.wonderwords.core.navigation.DetailRoutes
 import com.kotlin.wonderwords.core.navigation.Graphs
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
+import com.kotlin.wonderwords.features.create_quote.presentation.screens.CreateQuoteScreen
 import com.kotlin.wonderwords.features.details.presentation.screen.QuoteDetailsScreen
 import com.kotlin.wonderwords.features.user_update.presentation.screens.UpdateUserScreen
 
@@ -59,6 +61,38 @@ fun NavGraphBuilder.detailGraph(
                 },
                 username = username,
                 email = email
+            )
+        }
+
+        composable(
+            route = "${DetailRoutes.CreateQuote.destination}/{username}",
+            arguments = listOf(
+                navArgument(
+                    name = "username"
+                ) {
+                    type = NavType.StringType
+                }
+            ),
+            enterTransition = {
+                slideInVertically()
+            }
+        ) { navBackStackEntry ->
+            val username = navBackStackEntry.arguments?.getString("username") ?: "JohnDoe"
+            CreateQuoteScreen(
+                modifier = modifier,
+                sharedViewModel = sharedViewModel,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onQuotedCreatedSuccessfully = { quoteId ->
+                    navController.navigate("${DetailRoutes.QuoteDetails.destination}/$quoteId"){
+                        launchSingleTop = true
+                        popUpTo(DetailRoutes.QuoteDetails.destination){
+                            inclusive = true
+                        }
+                    }
+                },
+                username = username
             )
         }
     }

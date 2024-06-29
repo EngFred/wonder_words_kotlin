@@ -29,7 +29,7 @@ fun SetSystemBarColor(
     val statusBarColor = if(!isAuth) {
         barColor?.toArgb() ?: MaterialTheme.colorScheme.surface.toArgb()
     } else {
-        if ( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) {
+        if ( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() && currentTheme !=  ThemeMode.Light ) {
             DarkSlateGrey.toArgb()
         } else {
             Color.Black.toArgb()

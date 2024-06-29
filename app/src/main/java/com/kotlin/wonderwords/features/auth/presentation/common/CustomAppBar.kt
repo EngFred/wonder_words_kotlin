@@ -1,6 +1,5 @@
 package com.kotlin.wonderwords.features.auth.presentation.common
 
-import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,11 +21,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
-import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 
 @Composable
-fun AuthAppBar(
+fun CustomAppBar(
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
     text: String,
@@ -65,6 +63,6 @@ private fun AuthAppBarPreview() {
     WonderWordsTheme(
         darkTheme = true
     ) {
-        AuthAppBar(onClose = { /*TODO*/ }, text = "Login")
+        CustomAppBar(onClose = { /*TODO*/ }, text = "Login")
     }
 }

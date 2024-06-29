@@ -7,4 +7,5 @@ sealed class QuotesUiEvents {
     data class SearchQueryChanged(val query: String) : QuotesUiEvents()
 
     data object LoadedMoreQuotes: QuotesUiEvents()
+    data object DismissedQuoteOfTheDay: QuotesUiEvents()
 }

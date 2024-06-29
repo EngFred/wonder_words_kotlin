@@ -1,11 +1,13 @@
 package com.kotlin.wonderwords.features.quotes.data.repository
 
+import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.mapper.toQuote
 import com.kotlin.wonderwords.features.quotes.data.mapper.toQuoteEntity
-import com.kotlin.wonderwords.features.quotes.data.remote.api.QuotesApiService
+import com.kotlin.wonderwords.features.quotes.data.api.QuotesApiService
 import com.kotlin.wonderwords.features.quotes.domain.models.DataSource
+import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
@@ -18,11 +20,19 @@ class QuotesRepositoryImpl @Inject constructor(
     private val quotesDatabase: QuotesDatabase
 ): QuotesRepository {
 
+    companion object {
+        const val TAG = "QuotesRepositoryImpl"
+    }
+
     override suspend fun fetchQuotes(page: Int, category: QuoteCategory): DataState<DataSource> {
 
         if (category == QuoteCategory.All) {
             return try {
-                val quotesDTO = quotesApiService.getQuotes(page).quotes
+                val apiResponse =  quotesApiService.getQuotes(page)
+
+                val quotesDTO = apiResponse.quotes.filter {
+                    !it.body.isNullOrEmpty() && it.body.length > 16
+                }
                 if (page == 1) {
                     quotesDatabase.quotesDao().clearAllQuotesByCategory(category.name.lowercase()) // for refreshing
                 }
@@ -31,7 +41,8 @@ class QuotesRepositoryImpl @Inject constructor(
                 val quotes = quotesDTO.map { it.toQuote() }
                 val dataFrom = DataSource(
                     source = Source.Remote,
-                    data = quotes
+                    isLastPage = apiResponse.lastPage,
+                    quotes = quotes
                 )
                 DataState.Success(dataFrom)
             }catch (e: Exception){
@@ -40,7 +51,8 @@ class QuotesRepositoryImpl @Inject constructor(
                         .map { it.toQuote() }
                     val dataFrom = DataSource(
                         source = Source.Cache,
-                        data = quotes
+                        isLastPage = false,
+                        quotes = quotes
                     )
                     DataState.Success(dataFrom)
                 } else {
@@ -49,7 +61,12 @@ class QuotesRepositoryImpl @Inject constructor(
             }
         } else {
             return try {
-                val quotesDTO = quotesApiService.getQuotesByCategory(page, category.name.lowercase()).quotes
+                val apiResponse = quotesApiService.getQuotesByCategory(page, category.name.lowercase())
+
+                val quotesDTO = apiResponse.quotes.filter {
+                    !it.body.isNullOrEmpty() && it.body.length > 16
+                }
+
                 if (page == 1) {
                     quotesDatabase.quotesDao().clearAllQuotesByCategory(category.name.lowercase())
                 }
@@ -58,7 +75,8 @@ class QuotesRepositoryImpl @Inject constructor(
                 val quotes = quotesDTO.map { it.toQuote() }
                 val dataFrom = DataSource(
                     source = Source.Remote,
-                    data = quotes
+                    isLastPage = apiResponse.lastPage,
+                    quotes = quotes
                 )
                 DataState.Success(dataFrom)
             } catch (e: Exception) {
@@ -67,13 +85,33 @@ class QuotesRepositoryImpl @Inject constructor(
                         .map { it.toQuote() }
                     val dataFrom = DataSource(
                         source = Source.Cache,
-                        data = quotes
+                        isLastPage = false,
+                        quotes = quotes
                     )
                     DataState.Success(dataFrom)
                 } else {
                     DataState.Error(error = e.message.toString())
                 }
             }
+        }
+    }
+
+    override suspend fun getQuoteOfTheDay(): DataState<Quote> {
+        return try {
+            Log.d("$", "Fetching quote of the day...")
+            val qotdRes = quotesApiService.getQuoteOfTheDay()
+            val qotd = qotdRes.quote.toQuote()
+
+            if ( qotd.body != null && qotd.body.length > 16  ) {
+                Log.d("$", "Successfully fetched quote of the day")
+                DataState.Success(qotd)
+            } else {
+                Log.d("$", "Received quote of the day is deformed! $qotd")
+                DataState.Error("Received quote of the day is deformed!")
+            }
+        }catch (e: Exception) {
+            Log.d("$", "Error getting quote of the day! $e")
+            DataState.Error(e.message.toString())
         }
     }
 

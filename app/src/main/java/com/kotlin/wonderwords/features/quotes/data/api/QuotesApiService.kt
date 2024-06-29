@@ -1,5 +1,6 @@
-package com.kotlin.wonderwords.features.quotes.data.remote.api
+package com.kotlin.wonderwords.features.quotes.data.api
 
+import com.kotlin.wonderwords.features.quotes.data.modals.QuoteOfTheDayResponse
 import com.kotlin.wonderwords.features.quotes.data.modals.QuotesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,5 +17,8 @@ interface QuotesApiService {
         @Query("page") page: Int,
         @Query("filter") category: String
     ): QuotesResponse
+
+    @GET("/api/qotd")
+    suspend fun getQuoteOfTheDay() : QuoteOfTheDayResponse
 
 }

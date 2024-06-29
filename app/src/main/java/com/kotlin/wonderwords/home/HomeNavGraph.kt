@@ -31,7 +31,12 @@ fun HomeNavGraph(
                     }
                 },
                 modifier = modifier,
-                sharedViewModel = sharedViewModel
+                sharedViewModel = sharedViewModel,
+                onAddQuote = { username ->
+                    navController.navigate("${DetailRoutes.CreateQuote.destination}/$username"){
+                        launchSingleTop = true
+                    }
+                }
             )
         }
         composable(BottomBarNavRoutes.Profile.destination) {

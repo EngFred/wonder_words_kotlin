@@ -12,5 +12,8 @@ data class QuotesUiState(
     val initialLoading: Boolean = true,
     val refreshError: String? = null,
     val quotes: List<Quote> = emptyList(),
-    val source: Source = Source.Cache
+    val quoteOfTheDay: Quote? = null,
+    val source: Source = Source.Cache,
+    val isLastPage: Boolean = false,
+    val showDialog: Boolean = false
 )

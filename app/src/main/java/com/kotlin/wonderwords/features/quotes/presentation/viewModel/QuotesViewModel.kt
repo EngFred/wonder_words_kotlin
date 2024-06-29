@@ -7,6 +7,7 @@ import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.domain.usecase.FetchQuotesUseCase
+import com.kotlin.wonderwords.features.quotes.domain.usecase.GetQuoteOfTheDayUseCase
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesUiEvents
 import com.kotlin.wonderwords.features.quotes.presentation.screen.QuotesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuotesViewModel @Inject constructor(
-    private val fetchQuotesUseCase: FetchQuotesUseCase
+    private val fetchQuotesUseCase: FetchQuotesUseCase,
+    private val getQuoteOfTheDayUseCase: GetQuoteOfTheDayUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(QuotesUiState())
@@ -30,6 +32,7 @@ class QuotesViewModel @Inject constructor(
 
     init {
         fetchQuotes(_uiState.value.selectedCategory)
+        getQuoteOfTheDay()
     }
 
     fun onEvent(event: QuotesUiEvents) {
@@ -56,7 +59,17 @@ class QuotesViewModel @Inject constructor(
             }
 
             QuotesUiEvents.LoadedMoreQuotes -> {
-                fetchQuotes(_uiState.value.selectedCategory)
+                if (!_uiState.value.isLastPage) {
+                    fetchQuotes(_uiState.value.selectedCategory)
+                }
+            }
+
+            QuotesUiEvents.DismissedQuoteOfTheDay -> {
+                _uiState.update {
+                    it.copy(
+                        quoteOfTheDay = null
+                    )
+                }
             }
         }
     }
@@ -76,25 +89,39 @@ class QuotesViewModel @Inject constructor(
                 }
                 DataState.Loading -> Unit
                 is DataState.Success -> {
-                    Log.v("okhttp.OkHttpClient", "Data source is ${dataState.data.source}")
+                    Log.v("okhttp.OkHttpClient", "Data source is ${dataState.data.source} and isLastPage = ${dataState.data.isLastPage}")
                     val newQuotes = when{
-                        dataState.data.source == Source.Remote -> _uiState.value.quotes + dataState.data.data
-                        (dataState.data.source == Source.Cache) && (currentPage == 1 ) -> dataState.data.data
+                        dataState.data.source == Source.Remote -> _uiState.value.quotes + dataState.data.quotes
+                        (dataState.data.source == Source.Cache) && (currentPage == 1 ) -> dataState.data.quotes
                         else -> _uiState.value.quotes
                     }
                     _uiState.update {
                         it.copy(
                             quotes = newQuotes,
+                            isLastPage = dataState.data.isLastPage,
                             initialLoading = false,
                             source = dataState.data.source
                         )
                     }
                     currentPage++
                     isLoading = false
-
                 }
             }
+        }
+    }
 
+    private fun getQuoteOfTheDay() = viewModelScope.launch {
+        val dataState = getQuoteOfTheDayUseCase.invoke()
+        when(dataState){
+            is DataState.Error -> Unit
+            DataState.Loading -> Unit
+            is DataState.Success -> {
+                _uiState.update {
+                    it.copy(
+                        quoteOfTheDay = dataState.data
+                    )
+                }
+            }
         }
     }
 }
