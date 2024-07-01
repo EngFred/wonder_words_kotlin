@@ -4,7 +4,9 @@ Wonder Words is an android application built with kotlin programming language th
 
 ## Screenshots
 
-![111-imageonline co-merged](https://github.com/EngFred/Movie-Mania-Browser/assets/136785545/5eb5d3f6-a947-4bd8-86e8-2843ab0e7835)
+![WhatsApp Image 2024-07-01 at 12 23 23-imageonline co-merged](https://github.com/EngFred/wonder_words_flutter/assets/136785545/c26f390b-e972-40ac-ae0e-d32a1cfed034)
+
+![WhatsApp Image 2024-07-01 at 12 23 23-imageonline co-merged (1)](https://github.com/EngFred/wonder_words_flutter/assets/136785545/b1ea046e-2230-469e-a8be-0e6758a1262f)
 
 ## Features
 
