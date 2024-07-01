@@ -1,4 +1,4 @@
-package com.kotlin.wonderwords.features.details.domain.entity
+package com.kotlin.wonderwords.features.details.domain.models
 
 enum class ReactionType{
     Favorite,

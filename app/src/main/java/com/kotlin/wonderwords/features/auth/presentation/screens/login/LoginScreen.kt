@@ -33,7 +33,7 @@ import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
-import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
+import com.kotlin.wonderwords.core.presentation.common.AppButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.auth.presentation.viewModel.LoginViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
@@ -121,7 +121,7 @@ fun LoginScreen(
                 fontWeight = FontWeight.Bold
             ))
             Spacer(modifier = Modifier.size(16.dp))
-            AuthButton(text = "Login", onClick = {
+            AppButton(text = "Login", onClick = {
                 if (uiState.isFormValid) {
                     if (!uiState.isLoading) {
                         loginViewModel.onEvent(LoginUiEvents.LoginButtonClicked)

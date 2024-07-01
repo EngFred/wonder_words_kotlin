@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,13 +31,13 @@ fun SplashScreen(
 
     SetSystemBarColor(sharedViewModel = sharedViewModel, isAuth = false, barColor = Color.White)
 
-    val userStatus = sharedViewModel.userStatus.collectAsState().value
+    val userToken = sharedViewModel.userToken.collectAsState().value
 
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_lottie))
 
-    LaunchedEffect(userStatus) {
-        if (userStatus != null) {
-            if (userStatus) {
+    LaunchedEffect(userToken) {
+        if (userToken != null) {
+            if (userToken.isNotEmpty()) {
                 Log.d("#", "navigate to home")
                 delay(5000)
                 onNavigateToHome()
@@ -47,7 +46,7 @@ fun SplashScreen(
                 onNavigateToLogin()
             }
         }
-        Log.d("#", "User status ::: $userStatus")
+        Log.d("#", "User status ::: $userToken")
     }
 
     Box(

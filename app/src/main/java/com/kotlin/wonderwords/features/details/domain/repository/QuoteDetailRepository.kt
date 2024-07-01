@@ -1,7 +1,7 @@
 package com.kotlin.wonderwords.features.details.domain.repository
 
 import com.kotlin.wonderwords.core.network.DataState
-import com.kotlin.wonderwords.features.details.domain.entity.QuoteDetails
+import com.kotlin.wonderwords.features.details.domain.models.QuoteDetails
 import kotlinx.coroutines.flow.Flow
 
 interface QuoteDetailRepository {

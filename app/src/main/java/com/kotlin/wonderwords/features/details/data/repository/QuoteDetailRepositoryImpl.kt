@@ -2,9 +2,10 @@ package com.kotlin.wonderwords.features.details.data.repository
 
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
+import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.details.data.mapper.toQuoteDetails
-import com.kotlin.wonderwords.features.details.domain.entity.QuoteDetails
+import com.kotlin.wonderwords.features.details.domain.models.QuoteDetails
 import com.kotlin.wonderwords.features.details.domain.repository.QuoteDetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class QuoteDetailRepositoryImpl @Inject constructor(
-    private val quoteDetailService: QuoteDetailsApiService
+    private val quoteDetailService: QuoteDetailsApiService,
+    private val tokenManager: TokenManager
 ) :  QuoteDetailRepository {
 
     companion object {
@@ -23,9 +25,14 @@ class QuoteDetailRepositoryImpl @Inject constructor(
     override suspend fun fetchQuoteDetails(quoteId: Int): Flow<DataState<QuoteDetails>> {
         return flow {
             emit(DataState.Loading)
-            val quoteDetailsDTO = quoteDetailService.fetchQuoteDetails(quoteId)
-            val quoteDetails = quoteDetailsDTO.toQuoteDetails()
-            emit(DataState.Success(quoteDetails))
+            val userToken = tokenManager.getToken()
+            if (userToken != null) {
+                val quoteDetailsDTO = quoteDetailService.fetchQuoteDetails(quoteId, userToken)
+                val quoteDetails = quoteDetailsDTO.toQuoteDetails()
+                emit(DataState.Success(quoteDetails))
+            } else {
+                emit(DataState.Error("User token is null"))
+            }
         }.flowOn(Dispatchers.IO).catch {
             Log.e(TAG, it.message.toString())
             emit(DataState.Error("Something went wrong"))
@@ -34,49 +41,71 @@ class QuoteDetailRepositoryImpl @Inject constructor(
 
     override suspend fun favQuote(quoteId: Int): QuoteDetails? {
         return try {
-            val quoteDetailsDTO = quoteDetailService.favQuote(quoteId)
-            val quoteDetails = quoteDetailsDTO.toQuoteDetails()
-            Log.i(TAG, "Quote added to favorites")
-            quoteDetails
+            val userToken = tokenManager.getToken() ?: return null
+            val quoteDetailsDTO = quoteDetailService.favQuote(quoteId, userToken)
+
+            if ( quoteDetailsDTO.errorCode == null ) { //no error
+                val quoteDetails = quoteDetailsDTO.toQuoteDetails()
+                Log.i(TAG, "Quote added to favorites")
+                quoteDetails
+            } else {
+                null
+            }
         }catch (e: Exception) {
             Log.e(TAG, "Error adding quote to favorites: ${e.message}")
-            return null
+            null
         }
     }
 
     override suspend fun unfavQuote(quoteId: Int): QuoteDetails? {
         return try {
-            val quoteDetailsDTO = quoteDetailService.unfavQuote(quoteId)
-            val quoteDetails = quoteDetailsDTO.toQuoteDetails()
-            Log.i(TAG, "Quote removed from favorites")
-            quoteDetails
+            val userToken = tokenManager.getToken() ?: return null
+            val quoteDetailsDTO = quoteDetailService.unfavQuote(quoteId, userToken)
+            if ( quoteDetailsDTO.errorCode == null ) {
+                val quoteDetails = quoteDetailsDTO.toQuoteDetails()
+                Log.i(TAG, "Quote removed from favorite")
+                quoteDetails
+            } else {
+                null
+            }
         }catch (e: Exception) {
             Log.e(TAG, "Error removing quote from favorites: ${e.message}")
-            return null
+            null
         }
     }
 
     override suspend fun upvoteQuote(quoteId: Int): QuoteDetails? {
         return try {
-            val quoteDetailsDTO = quoteDetailService.upvoteQuote(quoteId)
-            val quoteDetails = quoteDetailsDTO.toQuoteDetails()
-            Log.i(TAG, "Quote up voted")
-            quoteDetails
+            val userToken = tokenManager.getToken() ?: return null
+            val quoteDetailsDTO = quoteDetailService.upvoteQuote(quoteId, userToken)
+            if ( quoteDetailsDTO.errorCode == null ) {
+                val quoteDetails = quoteDetailsDTO.toQuoteDetails()
+                Log.i(TAG, "Quote up voted")
+                quoteDetails
+            } else {
+                null
+            }
         }catch (e: Exception) {
             Log.e(TAG, "Error up voting quote: ${e.message}")
-            return null
+            null
         }
     }
 
     override suspend fun downvoteQuote(quoteId: Int): QuoteDetails? {
         return try {
-            val quoteDetailsDTO = quoteDetailService.downvoteQuote(quoteId)
-            val quoteDetails = quoteDetailsDTO.toQuoteDetails()
-            Log.i(TAG, "Quote down voted")
-            quoteDetails
+            val userToken = tokenManager.getToken() ?: return null
+            val quoteDetailsDTO = quoteDetailService.downvoteQuote(quoteId, userToken)
+
+            if ( quoteDetailsDTO.errorCode == null ) {
+                val quoteDetails = quoteDetailsDTO.toQuoteDetails()
+                Log.i(TAG, "Quote down voted")
+                quoteDetails
+            } else {
+                null
+            }
         }catch (e: Exception) {
             Log.e(TAG, "Error down voting quote: ${e.message}")
-            return null
+            null
         }
     }
 

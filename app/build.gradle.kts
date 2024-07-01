@@ -127,6 +127,9 @@ dependencies {
     //lottie
     implementation(libs.lottie.compose)
 
+    //material
+    implementation(libs.material)
+
 }
 
 kapt {

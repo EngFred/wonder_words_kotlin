@@ -2,7 +2,6 @@ package com.kotlin.wonderwords.di
 
 import com.kotlin.wonderwords.BuildConfig
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
-import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.create_quote.data.api.AddQuoteApiService
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.profile.data.api.UserProfileApiService
@@ -12,8 +11,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -35,8 +32,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor,
-        tokenManager: TokenManager
+        loggingInterceptor: HttpLoggingInterceptor
     ) : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
@@ -44,16 +40,6 @@ object NetworkModule {
                 val originalReq = chain.request()
                 val reqBuilder = originalReq.newBuilder()
                     .addHeader("Authorization", "Token token=${BuildConfig.API_KEY}")
-
-                // Fetch user token from TokenManager
-                val userToken = runBlocking {
-                    tokenManager.getToken()
-                }
-
-                if (userToken?.isNotEmpty() == true) {
-                    reqBuilder.addHeader("User-Token", userToken)
-                }
-
                 chain.proceed(reqBuilder.build())
             }
             .build()

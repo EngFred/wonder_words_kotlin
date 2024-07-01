@@ -3,6 +3,7 @@ package com.kotlin.wonderwords.features.quotes.data.api
 import com.kotlin.wonderwords.features.quotes.data.modals.QuoteOfTheDayResponse
 import com.kotlin.wonderwords.features.quotes.data.modals.QuotesResponse
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface QuotesApiService {

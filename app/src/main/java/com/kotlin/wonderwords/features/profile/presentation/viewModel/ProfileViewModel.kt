@@ -40,6 +40,17 @@ class ProfileViewModel @Inject constructor(
                 }
                 signOut()
             }
+
+            ProfileUiEvents.Refreshed -> {
+                if (!_uiState.value.isLoading && !_uiState.value.isRefreshing) {
+                    _uiState.update {
+                        it.copy(
+                            isRefreshing = true
+                        )
+                    }
+                    getUserDetails()
+                }
+            }
         }
     }
 
@@ -50,21 +61,17 @@ class ProfileViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
+                            isRefreshing = false,
                             error = dataState.error
                         )
                     }
                 }
-                DataState.Loading -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = true
-                        )
-                    }
-                }
+                DataState.Loading -> Unit
                 is DataState.Success -> {
                     _uiState.update {
                         it.copy(
                             isLoading = false,
+                            isRefreshing = false,
                             user = dataState.data
                         )
                     }

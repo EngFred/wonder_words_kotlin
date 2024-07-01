@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
@@ -47,8 +46,8 @@ import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.models.Source
-import com.kotlin.wonderwords.features.quotes.presentation.components.ErrorScreen
-import com.kotlin.wonderwords.features.quotes.presentation.components.LoadingScreen
+import com.kotlin.wonderwords.core.presentation.common.ErrorScreen
+import com.kotlin.wonderwords.core.presentation.common.LoadingScreen
 import com.kotlin.wonderwords.features.quotes.presentation.components.QuotesGrid
 import com.kotlin.wonderwords.features.quotes.presentation.viewModel.QuotesViewModel
 
@@ -120,12 +119,19 @@ fun QuotesScreen(
             }
 
             uiState.refreshError != null && !uiState.initialLoading -> {
-                ErrorScreen()
+                ErrorScreen(
+                    errorText = "Looks like something has gone wrong!",
+                    onRetry = {
+                        quotesViewModel.onEvent(QuotesUiEvents.RefreshedQuotes)
+                    }
+                )
             }
 
             else -> {
                 if (uiState.quotes.isEmpty()) {
-                    ErrorScreen(errorText = "No quotes found!\nEnsure you have an active internet connection and then try again.")
+                    ErrorScreen(errorText = "Nothing is found!.", onRetry = {
+                        quotesViewModel.onEvent(QuotesUiEvents.RefreshedQuotes)
+                    })
                 } else {
                     Spacer(modifier = Modifier.height(8.dp))
                     QuotesGrid(

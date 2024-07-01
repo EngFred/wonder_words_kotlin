@@ -1,9 +1,11 @@
 package com.kotlin.wonderwords.features.details.presentation.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -14,8 +16,8 @@ import com.kotlin.wonderwords.features.details.presentation.common.DetailsAppbar
 import com.kotlin.wonderwords.features.details.presentation.common.MainBody
 import com.kotlin.wonderwords.features.details.presentation.viewModel.QuoteDetailViewModel
 import com.kotlin.wonderwords.features.details.utils.shareQuote
-import com.kotlin.wonderwords.features.quotes.presentation.components.ErrorScreen
-import com.kotlin.wonderwords.features.quotes.presentation.components.LoadingScreen
+import com.kotlin.wonderwords.core.presentation.common.ErrorScreen
+import com.kotlin.wonderwords.core.presentation.common.LoadingScreen
 
 @Composable
 fun QuoteDetailsScreen(
@@ -29,6 +31,8 @@ fun QuoteDetailsScreen(
     val uiState = quoteDetailsViewModel.uiState.collectAsState().value
     val context = LocalContext.current
 
+    val currentTheme = sharedViewModel.currentTheme.collectAsState().value
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -40,7 +44,12 @@ fun QuoteDetailsScreen(
                 LoadingScreen()
             }
             uiState.error != null -> {
-                ErrorScreen( errorText = "Whops! Something went wrong.")
+                ErrorScreen(
+                    errorText = "Looks like something has gone wrong!",
+                    onRetry = {
+                        quoteDetailsViewModel.onEvent(QuoteDetailEvents.RetryClicked)
+                    }
+                )
             }
 
             else -> {
@@ -65,15 +74,20 @@ fun QuoteDetailsScreen(
                         onShare = {
                             shareQuote(context, quote)
                         },
-                        isFavorite = quote.userDetails?.favorited ?: false
+                        favorited = quote.userDetails?.favorited ?: false,
+                        upvoted = quote.userDetails?.upvoted ?: false,
+                        downVoted = quote.userDetails?.downvoted ?: false,
+                        currentTheme = currentTheme
                     )
                     MainBody(
                         modifier = Modifier.weight(1f),
-                        body = quote.body ?: "---",
-                        author = quote.author ?: "--"
+                        quote = quote
                     )
                 } else{
-                    ErrorScreen( errorText = "Unable to find quote!")
+                    ErrorScreen( errorText = "Quote not found!",
+                        onRetry = {
+                            quoteDetailsViewModel.onEvent(QuoteDetailEvents.RetryClicked)
+                        })
                 }
 
             }

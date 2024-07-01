@@ -8,4 +8,5 @@ sealed class QuotesUiEvents {
 
     data object LoadedMoreQuotes: QuotesUiEvents()
     data object DismissedQuoteOfTheDay: QuotesUiEvents()
+    data object RefreshedQuotes: QuotesUiEvents()
 }

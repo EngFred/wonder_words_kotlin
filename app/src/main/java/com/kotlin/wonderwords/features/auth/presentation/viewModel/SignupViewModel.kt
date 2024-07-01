@@ -3,8 +3,8 @@ package com.kotlin.wonderwords.features.auth.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kotlin.wonderwords.core.network.DataState
-import com.kotlin.wonderwords.features.auth.domain.entity.AuthRequest
-import com.kotlin.wonderwords.features.auth.domain.entity.User
+import com.kotlin.wonderwords.features.auth.domain.models.AuthRequest
+import com.kotlin.wonderwords.features.auth.domain.models.User
 import com.kotlin.wonderwords.features.auth.domain.usecase.SignUpUseCase
 import com.kotlin.wonderwords.features.auth.domain.usecase.ValidateEmailUseCase
 import com.kotlin.wonderwords.features.auth.domain.usecase.ValidatePasswordUseCase

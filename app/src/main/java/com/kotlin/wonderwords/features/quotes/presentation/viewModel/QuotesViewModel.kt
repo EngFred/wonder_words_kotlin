@@ -71,6 +71,17 @@ class QuotesViewModel @Inject constructor(
                     )
                 }
             }
+
+            QuotesUiEvents.RefreshedQuotes -> {
+                _uiState.update {
+                    it.copy(
+                        initialLoading = true,
+                        refreshError = null
+                    )
+                }
+                currentPage = 1
+                fetchQuotes(_uiState.value.selectedCategory)
+            }
         }
     }
     private fun fetchQuotes(category: QuoteCategory){

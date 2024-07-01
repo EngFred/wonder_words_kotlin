@@ -26,7 +26,7 @@ import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
-import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
+import com.kotlin.wonderwords.core.presentation.common.AppButton
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.user_update.presentation.viewModel.UpdateUserViewModel
 
@@ -44,8 +44,6 @@ fun UpdateUserScreen(
     val context = LocalContext.current
 
     val uiState = updateUserViewModel.uiState.collectAsState().value
-
-    val currentTheme = sharedViewModel.currentTheme.collectAsState().value
 
     LaunchedEffect(uiState.updateError) {
         if (uiState.updateError != null) {
@@ -181,7 +179,7 @@ fun UpdateUserScreen(
 //            Spacer(modifier = Modifier.size(16.dp))
             Spacer(modifier = Modifier.weight(1f))
 
-            AuthButton(
+            AppButton(
                 icon = Icons.Rounded.Update,
                 text = "Update",
                 enabled = uiState.usernameError.isNullOrEmpty() && uiState.emailError.isNullOrEmpty() && uiState.passwordError.isNullOrEmpty(),

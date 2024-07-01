@@ -5,7 +5,7 @@ import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.auth.data.model.AuthResponse
 import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
-import com.kotlin.wonderwords.features.auth.domain.entity.AuthRequest
+import com.kotlin.wonderwords.features.auth.domain.models.AuthRequest
 import com.kotlin.wonderwords.features.auth.domain.repository.AuthRepository
 import javax.inject.Inject
 
@@ -27,7 +27,6 @@ class AuthRepositoryImpl @Inject constructor(
                 tokenManager.saveUserToken(apiResponse.userToken)
                 tokenManager.saveUsername(apiResponse.userName)
                 tokenManager.saveUserEmail(signupRequest.user.email!!)
-                tokenManager.saveUserStatus(true)
                 Log.i(TAG, "User info saved successfully!\n" +
                         "Username: ${apiResponse.userName}\n" +
                         "UserEmail: ${apiResponse.email}\n" +
@@ -51,7 +50,6 @@ class AuthRepositoryImpl @Inject constructor(
                 tokenManager.saveUserToken(apiResponse.userToken)
                 tokenManager.saveUsername(apiResponse.userName)
                 tokenManager.saveUserEmail(apiResponse.email)
-                tokenManager.saveUserStatus(true)
                 Log.v(TAG, "User info saved successfully!\nUsername: ${apiResponse.userName}\nUserEmail: ${apiResponse.email}\nUserToken: ${apiResponse.userToken}")
                 return DataState.Success(apiResponse)
             }

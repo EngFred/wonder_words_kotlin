@@ -2,7 +2,7 @@ package com.kotlin.wonderwords.features.details.utils
 
 import android.content.Context
 import android.content.Intent
-import com.kotlin.wonderwords.features.details.domain.entity.QuoteDetails
+import com.kotlin.wonderwords.features.details.domain.models.QuoteDetails
 
 fun shareQuote(context: Context, quote: QuoteDetails) {
     val shareIntent = Intent().apply {

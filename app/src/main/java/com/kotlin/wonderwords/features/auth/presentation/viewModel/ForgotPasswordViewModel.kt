@@ -3,8 +3,8 @@ package com.kotlin.wonderwords.features.auth.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kotlin.wonderwords.core.network.DataState
-import com.kotlin.wonderwords.features.auth.domain.entity.AuthRequest
-import com.kotlin.wonderwords.features.auth.domain.entity.User
+import com.kotlin.wonderwords.features.auth.domain.models.AuthRequest
+import com.kotlin.wonderwords.features.auth.domain.models.User
 import com.kotlin.wonderwords.features.auth.domain.usecase.ForgotPasswordUseCase
 import com.kotlin.wonderwords.features.auth.domain.usecase.ValidateEmailUseCase
 import com.kotlin.wonderwords.features.auth.presentation.screens.forgot_password.ForgotPasswordUiEvents
@@ -85,7 +85,7 @@ class ForgotPasswordViewModel @Inject constructor(
                 is DataState.Success -> {
                     _uiState.update {
                         it.copy(
-                            isSuccessful = true //also disable the button
+                            sentResetLink = true //also disable the button
                         )
                     }
                 }

@@ -1,7 +1,7 @@
 package com.kotlin.wonderwords.features.auth.data.source
 
 import com.kotlin.wonderwords.features.auth.data.model.AuthResponse
-import com.kotlin.wonderwords.features.auth.domain.entity.AuthRequest
+import com.kotlin.wonderwords.features.auth.domain.models.AuthRequest
 import retrofit2.http.Body
 import retrofit2.http.POST
 

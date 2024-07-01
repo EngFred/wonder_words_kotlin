@@ -46,7 +46,8 @@ object RepositoryModule {
     @Singleton
     fun providesQuotesRepository(
         quotesApiService: QuotesApiService,
-        quotesDatabase: QuotesDatabase
+        quotesDatabase: QuotesDatabase,
+        tokenManager: TokenManager
     ) : QuotesRepository{
         return  QuotesRepositoryImpl(
             quotesApiService = quotesApiService,
@@ -57,9 +58,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesQuoteDetailsRepository(
-        quoteDetailsApiService: QuoteDetailsApiService
+        quoteDetailsApiService: QuoteDetailsApiService,
+        tokenManager: TokenManager
     ) : QuoteDetailRepository {
-        return  QuoteDetailRepositoryImpl(quoteDetailsApiService)
+        return  QuoteDetailRepositoryImpl(quoteDetailsApiService, tokenManager)
     }
 
     @Provides
@@ -84,8 +86,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesAddQuoteRepository(
-        addQuoteApiService: AddQuoteApiService
+        addQuoteApiService: AddQuoteApiService,
+        tokenManager: TokenManager
     ): AddQuoteRepository {
-        return AddQuoteRepositoryImpl(addQuoteApiService)
+        return AddQuoteRepositoryImpl(addQuoteApiService, tokenManager)
     }
 }

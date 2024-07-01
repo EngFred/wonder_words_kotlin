@@ -30,11 +30,12 @@ class UserProfileRepositoryImpl @Inject constructor(
         return flow {
             emit(DataState.Loading)
             val username = tokenManager.getUserName.firstOrNull()
-            if (username.isNullOrEmpty()) {
-                Log.e(TAG, "Username is null")
-                emit(DataState.Error("Username is null"))
+            val userToken = tokenManager.getToken()
+            if (username.isNullOrEmpty() || userToken.isNullOrEmpty()) {
+                Log.e(TAG, "User info is null")
+                emit(DataState.Error("User info is null"))
             } else {
-                val userProfileDetailsDTO = userProfileApiService.getUserDetails(username)
+                val userProfileDetailsDTO = userProfileApiService.getUserDetails(username, userToken)
                 val userProfileDetails = userProfileDetailsDTO.toUserProfileDetails()
                 emit(DataState.Success(userProfileDetails))
             }
@@ -44,19 +45,17 @@ class UserProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun signOutUser() : DataState<Unit> {
+    override suspend fun signOutUser() : DataState<Boolean> {
         return try {
-            quotesDatabase.quotesDao().clearAllQuotes()
-            tokenManager.saveUserStatus(false)
-            DataState.Success(Unit)
-//            val signOutResponse = userProfileApiService.signOutUser()
-//            if ( signOutResponse.errorCode == null && signOutResponse.message != null ) {
-//                quotesDatabase.quotesDao().deleteQuotes()
-//                tokenManager.clearUserInfo()
-//                DataState.Success(Unit)
-//            } else {
-//                DataState.Error("Something went wrong!")
-//            }
+            val userToken = tokenManager.getToken() ?: return DataState.Error("Something went wrong!")
+            val signOutResponse = userProfileApiService.signOutUser(userToken)
+            if ( signOutResponse.errorCode == null && signOutResponse.message != null ) {
+                quotesDatabase.quotesDao().clearAllQuotes()
+                tokenManager.clearUserInfo()
+                DataState.Success(true)
+            } else {
+                DataState.Error("Something went wrong!")
+            }
         }catch (e: Exception) {
             Log.e(TAG, "Error signing out user: ${e.localizedMessage}")
             DataState.Error("Something went wrong!")

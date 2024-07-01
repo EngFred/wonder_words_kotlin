@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FormatQuote
 import androidx.compose.material3.Icon
@@ -20,11 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kotlin.wonderwords.core.presentation.theme.playWrite
 import com.kotlin.wonderwords.core.presentation.theme.poppins
+import com.kotlin.wonderwords.features.details.domain.models.QuoteDetails
 
 @Composable
 fun MainBody(
-    body: String,
-    author: String,
+    quote: QuoteDetails,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -48,11 +50,12 @@ fun MainBody(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = body,
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                text = quote.body ?: "---",
                 fontSize = 22.sp,
                 fontFamily = playWrite,
                 fontWeight = FontWeight.Bold,
-                lineHeight = 40.sp,
+                lineHeight = 35.sp,
                 maxLines = 14,
                 overflow = TextOverflow.Clip,
                 textAlign = TextAlign.Center
@@ -66,7 +69,7 @@ fun MainBody(
                 .size(50.dp)
         )
         Text(
-            text = "- $author",
+            text = "- ${quote.author}",
             maxLines = 2,
             fontFamily = poppins,
             fontWeight = FontWeight.SemiBold,

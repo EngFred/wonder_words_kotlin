@@ -25,16 +25,25 @@ class UpdateUserInfoRepositoryImpl @Inject constructor(
         Log.v(TAG, "$userUpdateRequest")
         return try {
             Log.d(TAG, "Updating user info...")
-            val res = updateUserApiService.updateUserInfo( username, userUpdateRequest)
-            if ( userUpdateRequest.user.login != null && userUpdateRequest.user.email != null ) {
-                tokenManager.saveUsername(userUpdateRequest.user.login)
-                tokenManager.saveUserEmail(userUpdateRequest.user.email)
-                Log.d(TAG, "Success updating user info ${res.message}")
-                DataState.Success(res)
+
+            val userToken = tokenManager.getToken() ?: return DataState.Error("No token found")
+            val res = updateUserApiService.updateUserInfo( userToken, username, userUpdateRequest)
+
+            if (res.errorCode == null) {
+                if ( userUpdateRequest.user.login != null && userUpdateRequest.user.email != null ) {
+                    tokenManager.saveUsername(userUpdateRequest.user.login)
+                    tokenManager.saveUserEmail(userUpdateRequest.user.email)
+                    Log.d(TAG, "Success updating user info ${res.message}")
+                    DataState.Success(res)
+                } else {
+                    Log.d(TAG, "Success updating user info ${res.message}")
+                    DataState.Success(res)
+                }
             } else {
-                Log.d(TAG, "Success updating user info ${res.message}")
-                DataState.Success(res)
+                Log.d(TAG, "An error occurred! ${res.message}")
+                DataState.Error("An Error occurred!")
             }
+
         }catch (e: Exception) {
             Log.d(TAG, "Error updating user info in catch block ${e.message}")
             DataState.Error(e.message.toString())

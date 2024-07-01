@@ -2,13 +2,15 @@ package com.kotlin.wonderwords.features.create_quote.data.repository
 
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
+import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.create_quote.data.api.AddQuoteApiService
 import com.kotlin.wonderwords.features.create_quote.domain.models.AddQuoteRequest
 import com.kotlin.wonderwords.features.create_quote.domain.repository.AddQuoteRepository
 import javax.inject.Inject
 
 class AddQuoteRepositoryImpl @Inject constructor(
-    private val addQuoteApiService: AddQuoteApiService
+    private val addQuoteApiService: AddQuoteApiService,
+    private val tokenManager: TokenManager
 ) : AddQuoteRepository {
 
     companion object {
@@ -17,7 +19,8 @@ class AddQuoteRepositoryImpl @Inject constructor(
     override suspend fun addQuote(requestBody: AddQuoteRequest): DataState<Int> {
         return try {
             Log.v(TAG, "Adding quote...")
-            val quoteDetailsDTO = addQuoteApiService.addQuote(requestBody)
+            val userToken = tokenManager.getToken() ?: return DataState.Error("User not logged in")
+            val quoteDetailsDTO = addQuoteApiService.addQuote(userToken ,requestBody)
             Log.v(TAG, "Quote added successfully!!")
             return DataState.Success(quoteDetailsDTO.id)
         } catch (e: Exception) {

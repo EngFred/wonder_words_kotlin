@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserProfileRepository {
     suspend fun getUserDetails() : Flow<DataState<UserProfileDetails>>
-    suspend fun signOutUser() : DataState<Unit>
+    suspend fun signOutUser() : DataState<Any>
 }

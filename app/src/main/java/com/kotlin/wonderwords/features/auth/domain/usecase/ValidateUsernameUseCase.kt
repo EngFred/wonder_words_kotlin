@@ -1,6 +1,6 @@
 package com.kotlin.wonderwords.features.auth.domain.usecase
 
-import com.kotlin.wonderwords.features.auth.domain.entity.ValidationResult
+import com.kotlin.wonderwords.features.auth.domain.models.ValidationResult
 
 class ValidateUsernameUseCase {
     operator fun invoke(username: String): ValidationResult {

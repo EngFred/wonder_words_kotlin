@@ -1,7 +1,7 @@
 package com.kotlin.wonderwords.features.auth.domain.usecase
 
 import android.util.Patterns
-import com.kotlin.wonderwords.features.auth.domain.entity.ValidationResult
+import com.kotlin.wonderwords.features.auth.domain.models.ValidationResult
 
 class ValidateEmailUseCase {
     operator fun invoke(email: String): ValidationResult {

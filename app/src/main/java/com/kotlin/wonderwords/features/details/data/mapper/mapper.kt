@@ -2,8 +2,8 @@ package com.kotlin.wonderwords.features.details.data.mapper
 
 import com.kotlin.wonderwords.features.details.data.model.QuoteDetailsDTO
 import com.kotlin.wonderwords.features.details.data.model.UserDetailsDTO
-import com.kotlin.wonderwords.features.details.domain.entity.QuoteDetails
-import com.kotlin.wonderwords.features.details.domain.entity.UserDetails
+import com.kotlin.wonderwords.features.details.domain.models.QuoteDetails
+import com.kotlin.wonderwords.features.details.domain.models.UserDetails
 
 fun QuoteDetailsDTO.toQuoteDetails() : QuoteDetails {
     return QuoteDetails(

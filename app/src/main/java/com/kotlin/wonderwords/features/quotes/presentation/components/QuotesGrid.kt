@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.quotes.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -26,7 +27,7 @@ fun QuotesGrid(
         items(
             count = quotes.size,
             key = {
-                quotes[it].id!!
+                "${quotes[it].id}${System.currentTimeMillis()}"
             },
         ) { index ->
             val quote = quotes[index]

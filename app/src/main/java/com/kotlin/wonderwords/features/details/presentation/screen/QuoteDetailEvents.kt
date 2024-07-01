@@ -5,5 +5,6 @@ sealed class QuoteDetailEvents {
     data object FavClicked : QuoteDetailEvents()
     data object Upvoted: QuoteDetailEvents()
     data object Downvoted: QuoteDetailEvents()
+    data object RetryClicked: QuoteDetailEvents()
 
 }

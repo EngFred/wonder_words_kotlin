@@ -19,7 +19,10 @@ data class QuoteDetailsDTO(
     @SerializedName("author_permalink")
     val authorPermalink: String?,
     @SerializedName("user_details")
-    val userDetails: UserDetailsDTO?
+    val userDetails: UserDetailsDTO?,
+
+    @SerializedName("error_code")
+    val errorCode: Int?
 )
 
 data class UserDetailsDTO(

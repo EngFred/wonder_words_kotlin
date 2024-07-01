@@ -1,4 +1,4 @@
-package com.kotlin.wonderwords.features.auth.presentation.common
+package com.kotlin.wonderwords.core.presentation.common
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,13 +28,13 @@ import com.kotlin.wonderwords.core.presentation.theme.WonderWordsTheme
 import com.kotlin.wonderwords.core.presentation.theme.poppins
 
 @Composable
-fun AuthButton(
+fun AppButton(
     modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
     cornerSize: Dp = 8.dp,
     height: Dp = 75.dp,
-    icon: ImageVector = Icons.AutoMirrored.Rounded.Login,
+    icon: ImageVector? = Icons.AutoMirrored.Rounded.Login,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
     isLoading: () -> Boolean,
     enabled: Boolean = true
@@ -55,8 +55,10 @@ fun AuthButton(
 
         if (!isLoading()) {
             Row {
-                Icon(imageVector = icon , contentDescription = null, tint = Color.LightGray )
-                Spacer(modifier = Modifier.width(8.dp))
+                if (icon != null) {
+                    Icon(imageVector = icon , contentDescription = null, tint = Color.LightGray )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
                 Text(text, color = Color.LightGray, fontFamily = poppins, fontWeight = FontWeight.ExtraBold )
             }
         } else {
@@ -72,6 +74,6 @@ private fun AuthButtonPreview() {
     WonderWordsTheme(
         darkTheme = false
     ) {
-        AuthButton(text = "SignIn", onClick = {  }, isLoading = {false})
+        AppButton(text = "SignIn", onClick = {  }, isLoading = {false})
     }
 }

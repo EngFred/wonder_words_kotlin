@@ -2,7 +2,7 @@ package com.kotlin.wonderwords.features.auth.domain.repository
 
 import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.auth.data.model.AuthResponse
-import com.kotlin.wonderwords.features.auth.domain.entity.AuthRequest
+import com.kotlin.wonderwords.features.auth.domain.models.AuthRequest
 
 interface AuthRepository {
     suspend fun signUp( signupRequest: AuthRequest) : DataState<AuthResponse>

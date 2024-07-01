@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.create_quote.presentation.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +36,7 @@ import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
-import com.kotlin.wonderwords.features.auth.presentation.common.AuthButton
+import com.kotlin.wonderwords.core.presentation.common.AppButton
 import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.features.create_quote.presentation.viewModels.CreateQuoteViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
@@ -68,7 +69,7 @@ fun CreateQuoteScreen(
 
     LaunchedEffect(uiState.createError) {
         if (uiState.createError != null) {
-            showToast(context, "Couldn't create quote!")
+            showToast(context, "Can't create quote! Please try again later", Toast.LENGTH_LONG)
         }
     }
 
@@ -137,7 +138,7 @@ fun CreateQuoteScreen(
                 }
             )
 
-            AuthButton(
+            AppButton(
                 modifier = Modifier.padding(horizontal = 45.dp),
                 text = "Create",
                 enabled = uiState.isValid,

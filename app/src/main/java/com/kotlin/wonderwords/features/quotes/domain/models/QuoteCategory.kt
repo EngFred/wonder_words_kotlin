@@ -9,5 +9,6 @@ enum class QuoteCategory {
     Love,
     Success,
     Friendship,
-    Wisdom
+    Wisdom,
+    Programming
 }

@@ -11,7 +11,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.kotlin.wonderwords.features.details.domain.entity.ReactionType
+import com.kotlin.wonderwords.features.details.domain.models.ReactionType
+import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
 
 @Composable
 fun DetailsAppbar(
@@ -24,8 +25,12 @@ fun DetailsAppbar(
     upvotesCount: Int,
     downvotesCount: Int,
     favoritesCount: Int,
-    isFavorite: Boolean
+    favorited: Boolean,
+    upvoted: Boolean,
+    downVoted: Boolean,
+    currentTheme: ThemeMode
 ) {
+
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -36,9 +41,29 @@ fun DetailsAppbar(
             Icon(imageVector = Icons.Rounded.ArrowBackIosNew, contentDescription = null)
         }
 
-        ReactionComponent(type = ReactionType.Favorite, count = favoritesCount, onClick = onFavClick, isFavorite =  isFavorite)
-        ReactionComponent(type = ReactionType.Upvote, count = upvotesCount, onClick = onUpvoteClick)
-        ReactionComponent(type = ReactionType.Dowvote, count = downvotesCount, onClick = onDowvoteClick)
+        ReactionComponent(
+            type = ReactionType.Favorite,
+            count = favoritesCount,
+            onClick = onFavClick,
+            isFavorite = favorited,
+            currentTheme = currentTheme
+        )
+        ReactionComponent(
+            type = ReactionType.Upvote,
+            count = upvotesCount,
+            onClick = onUpvoteClick,
+            upvoted = upvoted,
+            downVoted = downVoted,
+            currentTheme = currentTheme
+        )
+        ReactionComponent(
+            type = ReactionType.Dowvote,
+            count = downvotesCount,
+            onClick = onDowvoteClick,
+            upvoted = upvoted,
+            downVoted = downVoted,
+            currentTheme = currentTheme
+        )
 
         IconButton(onClick = onShare) {
             Icon(imageVector = Icons.Rounded.Share, contentDescription = null)

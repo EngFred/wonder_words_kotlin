@@ -59,6 +59,18 @@ class QuoteDetailViewModel @Inject constructor(
                     upvoteQuote(quoteId!!)
                 }
             }
+
+            QuoteDetailEvents.RetryClicked -> {
+                quoteId?.let {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = true,
+                            error = null
+                        )
+                    }
+                    fetchQuoteDetails(quoteId)
+                }
+            }
         }
     }
 
@@ -95,7 +107,7 @@ class QuoteDetailViewModel @Inject constructor(
     private fun favQuote(quoteId: Int) = viewModelScope.launch(Dispatchers.IO) {
         val updatedQuote = favQuoteDetailsUseCase(quoteId)
 
-        updatedQuote?.let {
+        if ( updatedQuote != null ) {
             _uiState.update {
                 it.copy(
                     quote = updatedQuote,
@@ -107,7 +119,7 @@ class QuoteDetailViewModel @Inject constructor(
     private fun unFavQuote(quoteId: Int) = viewModelScope.launch(Dispatchers.IO) {
         val updatedQuote = unFavQuoteDetailsUseCase(quoteId)
 
-        updatedQuote?.let {
+        if ( updatedQuote != null ) {
             _uiState.update {
                 it.copy(
                     quote = updatedQuote,
@@ -118,7 +130,7 @@ class QuoteDetailViewModel @Inject constructor(
 
     private fun upvoteQuote(quoteId: Int) = viewModelScope.launch(Dispatchers.IO) {
         val updatedQuote = upvoteQuoteUseCase(quoteId)
-        updatedQuote?.let {
+        if ( updatedQuote != null ) {
             _uiState.update {
                 it.copy(
                     quote = updatedQuote,
@@ -129,7 +141,7 @@ class QuoteDetailViewModel @Inject constructor(
 
     private fun downvoteQuote(quoteId: Int) = viewModelScope.launch(Dispatchers.IO) {
         val updatedQuote = downvoteQuoteUseCase(quoteId)
-        updatedQuote?.let {
+        if ( updatedQuote != null ) {
             _uiState.update {
                 it.copy(
                     quote = updatedQuote,
