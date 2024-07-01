@@ -55,12 +55,6 @@ To run this project locally, follow these steps:
     - Obtain an API key from [QuotesApi](https://favqs.com/api/).
     - Add the API key to your project (e.g., in a `.env` file or directly in the code).
 
-4. **Build and Run:**
-    - Run the app on an emulator or a physical device:
-      ```sh
-      flutter run
-      ```
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
