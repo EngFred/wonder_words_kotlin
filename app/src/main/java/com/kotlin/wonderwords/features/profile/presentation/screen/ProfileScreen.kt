@@ -24,6 +24,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -57,7 +58,7 @@ import com.kotlin.wonderwords.features.profile.presentation.common.UserMainInfo
 import com.kotlin.wonderwords.features.profile.presentation.viewModel.ProfileViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -226,6 +227,8 @@ fun ProfileScreen(
         PullRefreshIndicator(
             refreshing = uiState.isLoading,
             state = pullRefreshState,
+            backgroundColor = MaterialTheme.colorScheme.primary,
+            contentColor = Color.White,
             modifier = Modifier.align(Alignment.TopCenter)
         )
 
