@@ -3,7 +3,6 @@ package com.kotlin.wonderwords.features.user_update.data.repository
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
-import com.kotlin.wonderwords.features.profile.data.repository.UserProfileRepositoryImpl
 import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
 import com.kotlin.wonderwords.features.user_update.data.models.UserUpdateResponse
 import com.kotlin.wonderwords.features.user_update.domain.models.UserUpdateRequest

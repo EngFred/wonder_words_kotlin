@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.user_update.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,14 +29,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
-import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
-import com.kotlin.wonderwords.core.utils.showToast
-import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.core.presentation.common.AppButton
 import com.kotlin.wonderwords.core.presentation.theme.SteelBlue
 import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
+import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
+import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
+import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.features.user_update.presentation.viewModel.UpdateUserViewModel
 
 @Composable
@@ -47,6 +48,11 @@ fun UpdateUserScreen(
     email: String,
     updateUserViewModel: UpdateUserViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(true) {
+        Log.d("TAG", username)
+        Log.d("TAG", email)
+    }
     SetSystemBarColor(sharedViewModel = sharedViewModel, isAuth = true)
 
     val context = LocalContext.current
@@ -91,7 +97,7 @@ fun UpdateUserScreen(
                 },
                 value = { uiState.username ?: "" },
                 keyboardType = KeyboardType.Text,
-                imeAction = if (!uiState.password.isNullOrEmpty() && !uiState.email.isNullOrEmpty() && !uiState.password.isNullOrEmpty() && !uiState.twitterUsername.isNullOrEmpty() && !uiState.facebookUsername.isNullOrEmpty()) ImeAction.Done else ImeAction.Next,
+                imeAction = if (!uiState.password.isNullOrEmpty() && !uiState.email.isNullOrEmpty() && uiState.password.isNotEmpty() && !uiState.twitterUsername.isNullOrEmpty() && !uiState.facebookUsername.isNullOrEmpty()) ImeAction.Done else ImeAction.Next,
                 leadingIcon = { Icon(imageVector = Icons.Rounded.Person, contentDescription = null)  },
                 isError = {uiState.usernameError != null},
                 errorMessage = { uiState.usernameError }
@@ -105,7 +111,7 @@ fun UpdateUserScreen(
                 },
                 value = { uiState.email ?: "" },
                 keyboardType = KeyboardType.Email,
-                imeAction = if (!uiState.password.isNullOrEmpty() && !uiState.username.isNullOrEmpty() && !uiState.password.isNullOrEmpty() && !uiState.twitterUsername.isNullOrEmpty() && !uiState.facebookUsername.isNullOrEmpty()) ImeAction.Done else ImeAction.Next,
+                imeAction = if (!uiState.password.isNullOrEmpty() && !uiState.username.isNullOrEmpty() && uiState.password.isNotEmpty() && !uiState.twitterUsername.isNullOrEmpty() && !uiState.facebookUsername.isNullOrEmpty()) ImeAction.Done else ImeAction.Next,
                 leadingIcon = { Icon(imageVector = Icons.Rounded.Email, contentDescription = null)  },
                 isError = {uiState.emailError != null},
                 errorMessage = { uiState.emailError }

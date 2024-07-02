@@ -2,7 +2,6 @@ package com.kotlin.wonderwords.features.create_quote.data.repository
 
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
-import com.kotlin.wonderwords.features.auth.data.repository.AuthRepositoryImpl
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.create_quote.data.api.AddQuoteApiService
 import com.kotlin.wonderwords.features.create_quote.domain.models.AddQuoteRequest

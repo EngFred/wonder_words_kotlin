@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kotlin.wonderwords.core.presentation.common.ErrorScreen
+import com.kotlin.wonderwords.core.presentation.common.LoadingScreen
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.features.details.presentation.common.DetailsAppbar
 import com.kotlin.wonderwords.features.details.presentation.common.MainBody
 import com.kotlin.wonderwords.features.details.presentation.viewModel.QuoteDetailViewModel
 import com.kotlin.wonderwords.features.details.utils.shareQuote
-import com.kotlin.wonderwords.core.presentation.common.ErrorScreen
-import com.kotlin.wonderwords.core.presentation.common.LoadingScreen
 
 @Composable
 fun QuoteDetailsScreen(
@@ -27,6 +27,10 @@ fun QuoteDetailsScreen(
     sharedViewModel: SharedViewModel,
     quoteDetailsViewModel: QuoteDetailViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(true) {
+        Log.d("TAG", "$quoteId")
+    }
 
     val uiState = quoteDetailsViewModel.uiState.collectAsState().value
     val context = LocalContext.current

@@ -1,5 +1,6 @@
 package com.kotlin.wonderwords.features.create_quote.presentation.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -30,13 +31,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
+import com.kotlin.wonderwords.core.presentation.common.AppButton
 import com.kotlin.wonderwords.core.presentation.theme.DarkSlateGrey
 import com.kotlin.wonderwords.core.presentation.theme.SteelBlue
 import com.kotlin.wonderwords.core.presentation.theme.poppins
 import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
-import com.kotlin.wonderwords.core.presentation.common.AppButton
 import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.features.create_quote.presentation.viewModels.CreateQuoteViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
@@ -50,6 +51,10 @@ fun CreateQuoteScreen(
     onBack: () -> Unit,
     createQuoteViewModel: CreateQuoteViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(true) {
+        Log.d("TAG", "$username")
+    }
 
     val uiState = createQuoteViewModel.uiState.collectAsState().value
     val currentTheme = sharedViewModel.currentTheme.collectAsState().value

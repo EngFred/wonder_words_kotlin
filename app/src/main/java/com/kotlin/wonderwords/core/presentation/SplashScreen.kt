@@ -19,7 +19,6 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kotlin.wonderwords.R
 import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
-import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(

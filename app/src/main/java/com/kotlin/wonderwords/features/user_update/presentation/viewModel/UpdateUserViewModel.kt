@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UpdateUserViewModel @Inject constructor(
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val validateUsernameUseCase: ValidateUsernameUseCase
@@ -149,9 +149,7 @@ class UpdateUserViewModel @Inject constructor(
             user = userInfoToUpdate
         )
 
-        val dataState = updateUserInfoUseCase(oldUsername, userUpdateRequest)
-
-        when(dataState) {
+        when(val dataState = updateUserInfoUseCase(oldUsername, userUpdateRequest)) {
             is DataState.Error -> {
                 _uiState.update {
                     it.copy(
