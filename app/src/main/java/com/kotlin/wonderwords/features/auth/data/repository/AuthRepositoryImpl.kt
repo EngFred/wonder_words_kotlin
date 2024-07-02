@@ -7,6 +7,8 @@ import com.kotlin.wonderwords.features.auth.data.source.AuthApiService
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.auth.domain.models.AuthRequest
 import com.kotlin.wonderwords.features.auth.domain.repository.AuthRepository
+import okio.IOException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -36,8 +38,13 @@ class AuthRepositoryImpl @Inject constructor(
             Log.i(TAG, "Signup failed! userToken or userName returned is null!")
             return DataState.Error(apiResponse.message ?: "Unknown error") //tho here it wont be null
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return DataState.Error(e.message.toString())
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                return DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, e.message.toString())
+                return DataState.Error(e.message.toString())
+            }
         }
     }
 
@@ -56,8 +63,13 @@ class AuthRepositoryImpl @Inject constructor(
             Log.i(TAG, "Login failed! userToken or userName returned is null!")
             return DataState.Error(apiResponse.message ?: "Unknown error") //tho here it wont be null
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return DataState.Error(e.message.toString())
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                return DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, e.message.toString())
+                return DataState.Error(e.message.toString())
+            }
         }
     }
 
@@ -70,8 +82,13 @@ class AuthRepositoryImpl @Inject constructor(
             }
             return DataState.Error(apiResponse.message ?: "Unknown error")
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return DataState.Error(e.message.toString())
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                return DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, e.message.toString())
+                return DataState.Error(e.message.toString())
+            }
         }
     }
 
@@ -85,8 +102,13 @@ class AuthRepositoryImpl @Inject constructor(
             //when successfully updated password, user is logged out and redirected to login screen to login again
             return DataState.Error(apiResponse.message ?: "Unknown error")
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return DataState.Error(e.message.toString())
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                return DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, e.message.toString())
+                return DataState.Error(e.message.toString())
+            }
         }
     }
 }

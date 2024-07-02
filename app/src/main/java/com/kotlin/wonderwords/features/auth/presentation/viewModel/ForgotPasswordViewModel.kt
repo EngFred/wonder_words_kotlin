@@ -27,6 +27,13 @@ class ForgotPasswordViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun onEvent( event: ForgotPasswordUiEvents ) {
+        if (_uiState.value.error != null){
+            _uiState.update {
+                it.copy(
+                    error = null
+                )
+            }
+        }
         when(event) {
             is ForgotPasswordUiEvents.EmailChanged -> {
                 val validation = validateEmailUseCase(event.email)

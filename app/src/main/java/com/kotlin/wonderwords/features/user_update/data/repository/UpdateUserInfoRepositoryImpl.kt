@@ -3,10 +3,13 @@ package com.kotlin.wonderwords.features.user_update.data.repository
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
+import com.kotlin.wonderwords.features.profile.data.repository.UserProfileRepositoryImpl
 import com.kotlin.wonderwords.features.user_update.data.api.UpdateUserApiService
 import com.kotlin.wonderwords.features.user_update.data.models.UserUpdateResponse
 import com.kotlin.wonderwords.features.user_update.domain.models.UserUpdateRequest
 import com.kotlin.wonderwords.features.user_update.domain.repository.UpdateUserRepository
+import okio.IOException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class UpdateUserInfoRepositoryImpl @Inject constructor(
@@ -41,12 +44,17 @@ class UpdateUserInfoRepositoryImpl @Inject constructor(
                 }
             } else {
                 Log.d(TAG, "An error occurred! ${res.message}")
-                DataState.Error("An Error occurred!")
+                DataState.Error("${res.message}")
             }
 
         }catch (e: Exception) {
-            Log.d(TAG, "Error updating user info in catch block ${e.message}")
-            DataState.Error(e.message.toString())
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                DataState.Error("No internet connection!")
+            } else{
+                Log.d(TAG, "Error updating user info in catch block ${e.message}")
+                DataState.Error(e.message.toString())
+            }
         }
     }
 }

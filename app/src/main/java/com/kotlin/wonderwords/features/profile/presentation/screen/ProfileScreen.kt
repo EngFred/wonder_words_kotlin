@@ -88,7 +88,7 @@ fun ProfileScreen(
 
     LaunchedEffect( uiState.signOutError ) {
         if ( uiState.signOutError != null ) {
-            showToast(context, "Something went wrong")
+            showToast(context, uiState.signOutError)
         }
     }
 

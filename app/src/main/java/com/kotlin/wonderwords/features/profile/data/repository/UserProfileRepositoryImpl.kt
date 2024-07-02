@@ -3,6 +3,7 @@ package com.kotlin.wonderwords.features.profile.data.repository
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
+import com.kotlin.wonderwords.features.create_quote.data.repository.AddQuoteRepositoryImpl
 import com.kotlin.wonderwords.features.profile.data.api.UserProfileApiService
 import com.kotlin.wonderwords.features.profile.data.mapper.toUserProfileDetails
 import com.kotlin.wonderwords.features.profile.domain.model.UserProfileDetails
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okio.IOException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class UserProfileRepositoryImpl @Inject constructor(
@@ -40,25 +43,35 @@ class UserProfileRepositoryImpl @Inject constructor(
                 emit(DataState.Success(userProfileDetails))
             }
         }.flowOn(Dispatchers.IO).catch {
-            Log.e(TAG, "Error fetching user details: ${it.localizedMessage}")
-            emit(DataState.Error("Error fetching user details"))
+            if (it is ConnectException || it is IOException || it.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, "Error fetching user details: ${it.localizedMessage}")
+                emit(DataState.Error(it.message.toString()))
+            }
         }
     }
 
     override suspend fun signOutUser() : DataState<Boolean> {
         return try {
-            val userToken = tokenManager.getToken() ?: return DataState.Error("Something went wrong!")
+            val userToken = tokenManager.getToken() ?: return DataState.Error("User token not found!")
             val signOutResponse = userProfileApiService.signOutUser(userToken)
             if ( signOutResponse.errorCode == null && signOutResponse.message != null ) {
                 quotesDatabase.quotesDao().clearAllQuotes()
                 tokenManager.clearUserInfo()
                 DataState.Success(true)
             } else {
-                DataState.Error("Something went wrong!")
+                DataState.Error("An error occurred!")
             }
         }catch (e: Exception) {
-            Log.e(TAG, "Error signing out user: ${e.localizedMessage}")
-            DataState.Error("Something went wrong!")
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, "Error signing out user: ${e.localizedMessage}")
+                DataState.Error("Something went wrong!")
+            }
         }
     }
 }

@@ -12,14 +12,19 @@ import androidx.compose.material.icons.rounded.Key
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Update
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
@@ -27,6 +32,9 @@ import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.core.presentation.common.AppButton
+import com.kotlin.wonderwords.core.presentation.theme.SteelBlue
+import com.kotlin.wonderwords.core.presentation.theme.poppins
+import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.user_update.presentation.viewModel.UpdateUserViewModel
 
@@ -47,7 +55,7 @@ fun UpdateUserScreen(
 
     LaunchedEffect(uiState.updateError) {
         if (uiState.updateError != null) {
-            showToast(context, text = "Something went wrong!")
+            showToast(context, text = uiState.updateError)
         }
     }
 
@@ -118,65 +126,32 @@ fun UpdateUserScreen(
                 errorMessage = { uiState.passwordError }
             )
 
-//            AuthTextField(
-//                placeHolder = "X username",
-//                onTextChange = {
-//                    updateUserViewModel.onEvent(UpdateUserUiEvents.TwitterUsernameChanged(it))
-//                },
-//                value = { uiState.twitterUsername ?: "" },
-//                isPassword = false,
-//                keyboardType = KeyboardType.Text,
-//                imeAction = if (!uiState.password.isNullOrEmpty() && !uiState.email.isNullOrEmpty() && !uiState.password.isNullOrEmpty() && !uiState.username.isNullOrEmpty() && !uiState.facebookUsername.isNullOrEmpty()) ImeAction.Done else ImeAction.Next,
-//                leadingIcon = { Icon(imageVector = Icons.Rounded.ConnectWithoutContact, contentDescription = null)  },
-//            )
-//
-//            AuthTextField(
-//                placeHolder = "Facebook username",
-//                onTextChange = {
-//                    updateUserViewModel.onEvent(UpdateUserUiEvents.FacebookUsernameChanged(it))
-//                },
-//                value = { uiState.facebookUsername ?: "" },
-//                isPassword = false,
-//                keyboardType = KeyboardType.Text,
-//                imeAction = if (!uiState.password.isNullOrEmpty() && !uiState.email.isNullOrEmpty() && !uiState.password.isNullOrEmpty() && !uiState.username.isNullOrEmpty() && !uiState.username.isNullOrEmpty()) ImeAction.Done else ImeAction.Next,
-//                leadingIcon = { Icon(imageVector = Icons.Rounded.Facebook, contentDescription = null)  },
-//            )
-//
-//            Spacer(modifier = Modifier.size(16.dp))
-//
-//            Box(
-//                contentAlignment = Alignment.TopStart,
-//                modifier = Modifier.align(Alignment.Start)
-//            ) {
-//                Button(
-//                    modifier = Modifier.width(220.dp).height(45.dp),
-//                    shape = RoundedCornerShape(7.dp),
-//                    onClick = {
-//                    updateUserViewModel.onEvent(UpdateUserUiEvents.SelectSourceButtonClicked)
-//                }) {
-//                    val text = if ( uiState.profilePicSource?.name == null || uiState.profilePicSource == ProfilePicSource.None ) "Select pic source" else uiState.profilePicSource.name
-//                    Text(text = text, color = Color.LightGray)
-//                }
-//
-//                DropdownMenu(
-//                    expanded = uiState.expanded,
-//                    onDismissRequest = {
-//                        updateUserViewModel.onEvent(UpdateUserUiEvents.SelectSourceButtonClicked)
-//                    }
-//                ) {
-//                    ProfilePicSource.entries.forEach { source ->
-//                        DropdownMenuItem(
-//                            text = { Text(text = source.name) },
-//                            onClick = {
-//                                updateUserViewModel.onEvent(UpdateUserUiEvents.ProfilePicSourceChanged(source))
-//                            }
-//                        )
-//                        HorizontalDivider()
-//                    }
-//                }
-//            }
-//
-//            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Text(text = buildAnnotatedString {
+                withStyle(style = SpanStyle( fontFamily = poppinsBold, color = SteelBlue )) {
+                    append("Note:\n")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("The ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppinsBold )) {
+                    append("username ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("can only contain letters (a-z), numbers (0-9) and the underscore (_) and the max Length 20 characters!\n\n")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("The ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppinsBold )) {
+                    append("password ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("must be at least 6 characters long!")
+                }
+            })
+            Spacer(modifier = Modifier.size(16.dp))
             Spacer(modifier = Modifier.weight(1f))
 
             AppButton(

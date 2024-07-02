@@ -2,10 +2,13 @@ package com.kotlin.wonderwords.features.create_quote.data.repository
 
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
+import com.kotlin.wonderwords.features.auth.data.repository.AuthRepositoryImpl
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
 import com.kotlin.wonderwords.features.create_quote.data.api.AddQuoteApiService
 import com.kotlin.wonderwords.features.create_quote.domain.models.AddQuoteRequest
 import com.kotlin.wonderwords.features.create_quote.domain.repository.AddQuoteRepository
+import okio.IOException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class AddQuoteRepositoryImpl @Inject constructor(
@@ -24,8 +27,13 @@ class AddQuoteRepositoryImpl @Inject constructor(
             Log.v(TAG, "Quote added successfully!!")
             return DataState.Success(quoteDetailsDTO.id)
         } catch (e: Exception) {
-            Log.d(TAG, "Failed to add quote! $e")
-            DataState.Error(e.message.toString())
+            if (e is ConnectException || e is IOException || e.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                DataState.Error("No internet connection!")
+            } else{
+                Log.d(TAG, "Failed to add quote! $e")
+                DataState.Error(e.message.toString())
+            }
         }
     }
 

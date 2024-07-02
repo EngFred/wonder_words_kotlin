@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Key
@@ -22,11 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kotlin.wonderwords.core.presentation.SetSystemBarColor
@@ -35,6 +39,8 @@ import com.kotlin.wonderwords.core.presentation.viewmodel.SharedViewModel
 import com.kotlin.wonderwords.core.utils.showToast
 import com.kotlin.wonderwords.features.auth.presentation.common.CustomAppBar
 import com.kotlin.wonderwords.core.presentation.common.AppButton
+import com.kotlin.wonderwords.core.presentation.theme.SteelBlue
+import com.kotlin.wonderwords.core.presentation.theme.poppinsBold
 import com.kotlin.wonderwords.features.auth.presentation.common.AuthTextField
 import com.kotlin.wonderwords.features.auth.presentation.viewModel.SignupViewModel
 import com.kotlin.wonderwords.features.profile.domain.model.ThemeMode
@@ -56,9 +62,9 @@ fun SignupScreen(
     val currentTheme = sharedViewModel.currentTheme.collectAsState().value
     val clickableTextColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
 
-    LaunchedEffect(key1 = uiState.signupError, key2 = uiState.isLoading ) {
-        if (uiState.signupError != null && !uiState.isLoading) {
-            showToast(context, text = "Something went wrong!")
+    LaunchedEffect(uiState.signupError) {
+        if (uiState.signupError != null) {
+            showToast(context, text = uiState.signupError)
         }
     }
 
@@ -74,13 +80,14 @@ fun SignupScreen(
     ) {
 
         CustomAppBar(onClose = { /*TODO*/ }, text = "Signup")
+        Spacer(modifier = Modifier.size(66.dp))
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             AuthTextField(
@@ -163,6 +170,32 @@ fun SignupScreen(
                 fontWeight = FontWeight.ExtraBold,
                 color = clickableTextColor
             ))
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Text(text = buildAnnotatedString {
+                withStyle(style = SpanStyle( fontFamily = poppinsBold, color = SteelBlue )) {
+                    append("Note:\n")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("The ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppinsBold )) {
+                    append("username ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("can only contain letters (a-z), numbers (0-9) and the underscore (_) and the max Length 20 characters!\n\n")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("The ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppinsBold )) {
+                    append("password ")
+                }
+                withStyle(style = SpanStyle( fontFamily = poppins, fontWeight = FontWeight.ExtraBold )) {
+                    append("must be at least 6 characters long!")
+                }
+            })
+            Spacer(modifier = Modifier.size(16.dp))
         }
     }
 }

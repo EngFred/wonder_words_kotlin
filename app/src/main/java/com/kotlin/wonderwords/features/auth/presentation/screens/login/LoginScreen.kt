@@ -57,9 +57,9 @@ fun LoginScreen(
     val currentTheme = sharedViewModel.currentTheme.collectAsState().value
     val clickableTextColor = if( currentTheme == ThemeMode.Dark || isSystemInDarkTheme() ) Color.LightGray else Color.Black
 
-    LaunchedEffect(key1 = uiState.loginError, key2 = uiState.isLoading ) {
-        if (uiState.loginError != null && !uiState.isLoading) {
-            showToast(context, text = "Something went wrong!")
+    LaunchedEffect(uiState.loginError) {
+        if (uiState.loginError != null) {
+            showToast(context, text = uiState.loginError)
         }
     }
 

@@ -69,7 +69,7 @@ fun CreateQuoteScreen(
 
     LaunchedEffect(uiState.createError) {
         if (uiState.createError != null) {
-            showToast(context, "Can't create quote! Please try again later", Toast.LENGTH_LONG)
+            showToast(context, uiState.createError, Toast.LENGTH_LONG)
         }
     }
 

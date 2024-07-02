@@ -45,7 +45,7 @@ fun QuoteDetailsScreen(
             }
             uiState.error != null -> {
                 ErrorScreen(
-                    errorText = "Looks like something has gone wrong!",
+                    errorText = uiState.error,
                     onRetry = {
                         quoteDetailsViewModel.onEvent(QuoteDetailEvents.RetryClicked)
                     }

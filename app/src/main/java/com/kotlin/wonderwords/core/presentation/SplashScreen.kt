@@ -39,7 +39,6 @@ fun SplashScreen(
         if (userToken != null) {
             if (userToken.isNotEmpty()) {
                 Log.d("#", "navigate to home")
-                delay(5000)
                 onNavigateToHome()
             } else {
                 Log.d("#", "navigate to login")

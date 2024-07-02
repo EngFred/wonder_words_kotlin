@@ -54,7 +54,13 @@ fun ForgotPasswordScreen(
     LaunchedEffect(uiState.sentResetLink) {
         if(uiState.sentResetLink){
             onLogin()
-            showToast(context, "Reset link has been sent to your email", toastLength = Toast.LENGTH_SHORT)
+            showToast(context, "Reset link has been sent to your email", toastLength = Toast.LENGTH_LONG)
+        }
+    }
+
+    LaunchedEffect(uiState.error) {
+        if(uiState.error != null ){
+            showToast(context, uiState.error, toastLength = Toast.LENGTH_LONG)
         }
     }
 

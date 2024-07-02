@@ -3,6 +3,7 @@ package com.kotlin.wonderwords.features.details.data.repository
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
 import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
+import com.kotlin.wonderwords.features.create_quote.data.repository.AddQuoteRepositoryImpl
 import com.kotlin.wonderwords.features.details.data.api.QuoteDetailsApiService
 import com.kotlin.wonderwords.features.details.data.mapper.toQuoteDetails
 import com.kotlin.wonderwords.features.details.domain.models.QuoteDetails
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okio.IOException
+import java.net.ConnectException
 import javax.inject.Inject
 
 class QuoteDetailRepositoryImpl @Inject constructor(
@@ -34,8 +37,13 @@ class QuoteDetailRepositoryImpl @Inject constructor(
                 emit(DataState.Error("User token is null"))
             }
         }.flowOn(Dispatchers.IO).catch {
-            Log.e(TAG, it.message.toString())
-            emit(DataState.Error("Something went wrong"))
+            if (it is ConnectException || it is IOException || it.cause is IOException) {
+                Log.e(TAG, "No internet connection!")
+                DataState.Error("No internet connection!")
+            } else{
+                Log.e(TAG, it.message.toString())
+                emit(DataState.Error(it.message.toString()))
+            }
         }
     }
 

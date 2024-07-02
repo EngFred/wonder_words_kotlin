@@ -138,9 +138,9 @@ class UpdateUserViewModel @Inject constructor(
     private fun updateUserInfo(oldUsername: String) = viewModelScope.launch(Dispatchers.IO) {
 
         val userInfoToUpdate = UserInfoToUpdate(
-            login = _uiState.value.username,
-            email = _uiState.value.email,
-            password = _uiState.value.password,
+            login = _uiState.value.username?.lowercase()?.trim(),
+            email = _uiState.value.email?.trim(),
+            password = _uiState.value.password?.trim(),
             facebook_username = _uiState.value.facebookUsername,
             twitter_username = _uiState.value.twitterUsername,
             pic = _uiState.value.profilePicSource?.name?.lowercase()

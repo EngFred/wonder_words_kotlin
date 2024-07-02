@@ -120,7 +120,7 @@ fun QuotesScreen(
 
             uiState.refreshError != null && !uiState.initialLoading -> {
                 ErrorScreen(
-                    errorText = "Looks like something has gone wrong!",
+                    errorText = uiState.refreshError,
                     onRetry = {
                         quotesViewModel.onEvent(QuotesUiEvents.RefreshedQuotes)
                     }

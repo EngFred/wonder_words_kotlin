@@ -2,18 +2,15 @@ package com.kotlin.wonderwords.features.quotes.data.repository
 
 import android.util.Log
 import com.kotlin.wonderwords.core.network.DataState
-import com.kotlin.wonderwords.features.auth.data.token_manager.TokenManager
+import com.kotlin.wonderwords.features.quotes.data.api.QuotesApiService
 import com.kotlin.wonderwords.features.quotes.data.local.db.QuotesDatabase
 import com.kotlin.wonderwords.features.quotes.data.mapper.toQuote
 import com.kotlin.wonderwords.features.quotes.data.mapper.toQuoteEntity
-import com.kotlin.wonderwords.features.quotes.data.api.QuotesApiService
 import com.kotlin.wonderwords.features.quotes.domain.models.DataSource
 import com.kotlin.wonderwords.features.quotes.domain.models.Quote
 import com.kotlin.wonderwords.features.quotes.domain.models.QuoteCategory
 import com.kotlin.wonderwords.features.quotes.domain.models.Source
 import com.kotlin.wonderwords.features.quotes.domain.repository.QuotesRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import okio.IOException
 import java.net.ConnectException
 import javax.inject.Inject
@@ -50,7 +47,7 @@ class QuotesRepositoryImpl @Inject constructor(
                 DataState.Success(dataFrom)
 
             } catch (e: Exception){
-                if (e is IOException || e is ConnectException) {
+                if (e is ConnectException || e is IOException) {
                     val quotes = quotesDatabase.quotesDao().getQuotes(category.name.lowercase())
                         .map { it.toQuote() }
                     val dataFrom = DataSource(
@@ -84,7 +81,7 @@ class QuotesRepositoryImpl @Inject constructor(
                 )
                 DataState.Success(dataFrom)
             } catch (e: Exception) {
-                if (e is IOException || e is ConnectException) {
+                if (e is ConnectException || e is IOException) {
                     val quotes = quotesDatabase.quotesDao().getQuotes(category.name.lowercase())
                         .map { it.toQuote() }
                     val dataFrom = DataSource(
