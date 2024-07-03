@@ -66,7 +66,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For any questions or feedback, please reach out to:
 
 - Engineer Fred - [engfred88@gmail.com](mailto:engfred88@gmail.com)
-- Project Link: [https://github.com/engFred/wonder-words-flutter](https://github.com/engFred/wonder_words_kotlin)
+- Project Link: [https://github.com/engFred/wonder_words_kotlin](https://github.com/engFred/wonder_words_kotlin)
 
 ## Acknowledgements
 
